@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      {{ room.centerName }}
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-slides effect="slide"
+              loop="true"
+              pager="true"
+              paginationType="bullets"
+              zoom="true">
+
+    <ion-slide *ngFor="let img of imgs">
+      <ion-img src="{{ img }}"></ion-img>
+    </ion-slide>
+  </ion-slides>
+  <p>{{ room.description }}</p>
+</ion-content>

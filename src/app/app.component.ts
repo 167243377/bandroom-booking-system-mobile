@@ -1,37 +1,47 @@
-import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
-import { StatusBar, Splashscreen } from 'ionic-native';
+import {Component, ViewChild} from '@angular/core';
+import {MenuController, Nav, Platform} from 'ionic-angular';
+import {StatusBar, Splashscreen} from 'ionic-native';
 
-import { TabsPage } from '../pages/tabs/tabs';
+import {AboutPage} from '../pages/about/about';
+import {AccountPage} from '../pages/account/account';
+import {ContactPage} from '../pages/contact/contact';
+import {SettingsPage} from '../pages/settings/settings';
+import {SearchPage} from '../pages/search/search';
 
-import { SettingsPage } from '../pages/settings/settings';
-import { AccountPage } from '../pages/account/account';
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
+  homePage = SearchPage;
 
-  rootPage = TabsPage;
+  mainPages: Array<{
+    title: string,
+    icon: string,
+    component: any
+  }>;
 
-  pages: Array<{title: string, component: any}>;
+  infoPages: Array<{
+    title: string,
+    component: any
+  }>;
 
-  constructor(public platform: Platform) {
+  constructor(private platform: Platform,
+              private menuCtrl: MenuController) {
     this.initializeApp();
 
-    // used for an example of ngFor and navigation
-    this.pages = [
-      { title: 'Homepage', component: TabsPage },
-      { title: 'Settings', component: SettingsPage },
-      { title: 'Account', component: AccountPage }
+    // used for navigation
+    this.mainPages = [
+      {title: 'Home', icon: 'home', component: SearchPage},
+      {title: 'Account', icon: 'contact', component: AccountPage},
     ];
 
-  }
-  openPage(page) {
-    // Reset the content nav to have just this page
-    // we wouldn't want the back button to show in this scenario
-    this.nav.setRoot(page.component);
+    this.infoPages = [
+      {title: 'Setting', component: SettingsPage},
+      {title: 'About', component: AboutPage},
+      {title: 'Contact', component: ContactPage},
+    ];
   }
 
   initializeApp() {
@@ -42,4 +52,13 @@ export class MyApp {
       Splashscreen.hide();
     });
   }
+
+  openPage(page) {
+    // Reset the content nav to have just this page
+    // we wouldn't want the back button to show in this scenario
+    this.nav.setRoot(page.component);
+    this.menuCtrl.close();
+  }
+
+
 }

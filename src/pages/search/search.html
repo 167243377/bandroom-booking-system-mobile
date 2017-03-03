@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      Search
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <ion-searchbar placeholder="搜尋店鋪名稱、地址或地區" [value]="searchCriterias.searchText"></ion-searchbar>
+
+  <button ion-button color="light" (click)="onInputDate()">
+    <ion-icon name="calendar"></ion-icon>
+    <ion-input [value]="searchCriterias.searchDate"></ion-input>
+  </button>
+
+  <button ion-button color="light" (click)="onSearchRooms()">搜尋</button>
+
+</ion-content>
