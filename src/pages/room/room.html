@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="primary">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
@@ -10,15 +10,26 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-slides effect="slide"
+  <ion-slides no-padding
+              height="100px"
+              effect="slide"
               loop="true"
               pager="true"
               paginationType="bullets"
               zoom="true">
 
-    <ion-slide *ngFor="let img of imgs">
-      <ion-img src="{{ img }}"></ion-img>
+    <ion-slide *ngFor="let img of room.imgs">
+      <img class="card-img" src="{{ img }}"/>
     </ion-slide>
   </ion-slides>
+
   <p>{{ room.description }}</p>
+
+  <div>HK$ {{ room.price }} / 小時</div>
+
+  <hr>
+
+  <button ion-button
+          icon-right>立即預訂</button>
+
 </ion-content>

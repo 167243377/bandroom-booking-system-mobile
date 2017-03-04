@@ -1,23 +1,66 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="primary">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>
-      Search
+      搜尋
     </ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <h2>
+          <ion-searchbar placeholder="搜尋店鋪名稱、地址或地區"
+                         mode="md"
+                         [value]="searchCriterias.searchText"
+                         no-padding></ion-searchbar>
+        </h2>
+      </ion-col>
+    </ion-row>
+    <ion-row>
 
-  <ion-searchbar placeholder="搜尋店鋪名稱、地址或地區" [value]="searchCriterias.searchText"></ion-searchbar>
+      <ion-col width-75>
+        <button ion-button
+                full
+                large
+                color="light"
+                (click)="onInputDate()">
 
-  <button ion-button color="light" (click)="onInputDate()">
-    <ion-icon name="calendar"></ion-icon>
-    <ion-input [value]="searchCriterias.searchDate"></ion-input>
-  </button>
+          <ion-icon name="calendar"></ion-icon>
 
-  <button ion-button color="light" (click)="onSearchRooms()">搜尋</button>
+          <ion-label placeholder="選擇日期">{{ searchCriterias.searchDate.toDateString() }}</ion-label>
 
+          <!--<ion-input [readonly]="true"-->
+          <!--[value]="searchCriterias.searchDate"-->
+          <!--placeholder="選擇日期"></ion-input>-->
+        </button>
+      </ion-col>
+
+      <ion-col width-25>
+        <button ion-button
+                full
+                large
+                color="header"
+                (click)="onSearchRooms()">搜尋
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <hr>
 </ion-content>
+
+<ion-footer class="ion-footer">
+  <button ion-button
+          no-padding
+          no-margin
+          full
+          large
+          (click)="onGoToAdvancedSearchPage()"
+          color="primary">進階搜尋
+  </button>
+</ion-footer>

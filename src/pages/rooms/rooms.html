@@ -1,15 +1,15 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="primary">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>
+    <ion-title color="header">
       所有結果
     </ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding="">
+<ion-content padding>
 
   <ion-card *ngFor="let room of rooms; let i = index"
             (click)="onGoToRoomDetailPage(room)">
@@ -17,11 +17,11 @@
       {{ room.centerName }}
     </ion-card-header>
 
-    <ion-img  src="./room.jpg"></ion-img>
+    <img class="card-img" src="{{ room.imgs[0] }}"/>
 
     <ion-card-content>
       <ion-card-title>
-        HK${{ room.price }}/小時
+        HK${{ room.price }} / 小時
       </ion-card-title>
 
       <p>{{ room.description }}</p>

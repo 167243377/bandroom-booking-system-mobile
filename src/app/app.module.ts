@@ -9,12 +9,15 @@ import {SettingsPage} from '../pages/settings/settings';
 import {SearchPage} from '../pages/search/search';
 import {RoomPage} from '../pages/room/room';
 import {RoomsPage} from '../pages/rooms/rooms';
+import {RoomService} from "../services/rooms";
+import {AdvancedSearchPage} from "../pages/advanced-search/advanced-search";
 
 @NgModule({
   declarations: [
     MyApp,
     AboutPage,
     AccountPage,
+    AdvancedSearchPage,
     ContactPage,
     SettingsPage,
     SearchPage,
@@ -29,13 +32,16 @@ import {RoomsPage} from '../pages/rooms/rooms';
     MyApp,
     AboutPage,
     AccountPage,
+    AdvancedSearchPage,
     ContactPage,
     SettingsPage,
     SearchPage,
     RoomsPage,
     RoomPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
+  providers: [
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    RoomService]
 })
 export class AppModule {
 }
