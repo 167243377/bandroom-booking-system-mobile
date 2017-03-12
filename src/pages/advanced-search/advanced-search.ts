@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
-import {RoomType} from "../../Model/roomType";
-import {District} from "../../Model/district";
+import {RoomType} from "../../model/roomType";
+import {District} from "../../model/district";
 import {DatePicker} from "ionic-native";
 import {RoomsPage} from "../rooms/rooms";
 

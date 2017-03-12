@@ -7,6 +7,7 @@ import {AccountPage} from '../pages/account/account';
 import {ContactPage} from '../pages/contact/contact';
 import {SettingsPage} from '../pages/settings/settings';
 import {SearchPage} from '../pages/search/search';
+import {TabsPage} from "../pages/tabs/tabs";
 
 
 @Component({
@@ -14,7 +15,8 @@ import {SearchPage} from '../pages/search/search';
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
-  homePage = SearchPage;
+  tabsPage = TabsPage;
+  //including SearchPage and FavoritePage
 
   mainPages: Array<{
     title: string,
@@ -33,7 +35,7 @@ export class MyApp {
 
     // used for navigation
     this.mainPages = [
-      {title: 'Home', icon: 'home', component: SearchPage},
+      {title: 'Home', icon: 'home', component: TabsPage},
       {title: 'Account', icon: 'contact', component: AccountPage},
     ];
 
@@ -45,10 +47,11 @@ export class MyApp {
   }
 
   initializeApp() {
-    this.platform.ready().then(() => {
+    this.platform.ready().then(() => { //es6 / typescript syntax function () =>
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       StatusBar.styleDefault();
+      StatusBar.backgroundColorByHexString('#750000');
       Splashscreen.hide();
     });
   }

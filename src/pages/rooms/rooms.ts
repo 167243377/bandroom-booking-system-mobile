@@ -1,14 +1,13 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams, NavOptions} from 'ionic-angular';
 import {RoomPage} from '../room/room';
-import {Room} from "../../Model/room";
+import {Room} from "../../model/room";
 
 @Component({
   selector: 'page-rooms',
   templateUrl: 'rooms.html'
 })
 export class RoomsPage {
-  roomPage: RoomPage;
 
   rooms = [{
     centerName: "BORN．The Music",

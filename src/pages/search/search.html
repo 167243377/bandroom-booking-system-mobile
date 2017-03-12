@@ -45,13 +45,34 @@
                 full
                 large
                 color="header"
-                (click)="onSearchRooms()">搜尋
+                (click)="onGoToSearchRooms()">搜尋
         </button>
       </ion-col>
     </ion-row>
   </ion-grid>
 
   <hr>
+
+  <h2>快速預約</h2>
+
+  <ion-slides no-padding
+              height="100px"
+              effect="slide"
+              loop="true"
+              pager="true"
+              paginationType="bullets"
+              zoom="true">
+
+    <ion-slide *ngFor="let room of rooms">
+      <img class="card-img" src="{{ room.images[0] }}"/>
+      <p>{{ room.center.name }}</p>
+      <p>{{ room.description }}</p>
+
+    </ion-slide>
+
+  </ion-slides>
+  <hr>
+
 </ion-content>
 
 <ion-footer class="ion-footer">

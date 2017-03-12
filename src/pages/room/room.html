@@ -1,8 +1,5 @@
 <ion-header>
   <ion-navbar color="primary">
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
     <ion-title>
       {{ room.centerName }}
     </ion-title>
@@ -11,25 +8,50 @@
 
 <ion-content padding>
   <ion-slides no-padding
-              height="100px"
+              class="normal-slides"
               effect="slide"
               loop="true"
               pager="true"
               paginationType="bullets"
-              zoom="true">
+              zoom="false">
 
     <ion-slide *ngFor="let img of room.imgs">
-      <img class="card-img" src="{{ img }}"/>
+      <img src="{{ img }}"/>
     </ion-slide>
   </ion-slides>
 
-  <p>{{ room.description }}</p>
+  <ion-navbar>
+    <h2>{{ room.description }}</h2>
+    <ion-label>HK$ {{ room.price }} / 小時</ion-label>
+    <ion-buttons end>
+      <button ion-button>立即預訂</button>
+    </ion-buttons>
+  </ion-navbar>
 
-  <div>HK$ {{ room.price }} / 小時</div>
 
   <hr>
 
-  <button ion-button
-          icon-right>立即預訂</button>
+  <p>時間</p>
+
+  <ion-navbar color="primary">
+    <ion-label padding-left="10" color="light" large>{{viewTitle}}</ion-label>
+    <ion-buttons end>
+      <button ion-button [disabled]="isToday" (click)="today()">今天</button>
+      <button ion-button (click)="changeMode('month')">月</button>
+      <button ion-button (click)="changeMode('week')">周</button>
+    </ion-buttons>
+  </ion-navbar>
+
+  <calendar [eventSource]="eventSource"
+            [calendarMode]="calendar.mode"
+            [currentDate]="calendar.currentDate"
+            (onCurrentDateChanged)="onCurrentDateChanged($event)"
+            (onEventSelected)="onEventSelected($event)"
+            (onTitleChanged)="onViewTitleChanged($event)"
+            (onTimeSelected)="onTimeSelected($event)"
+            step="30">
+  </calendar>
+
+  <hr>
 
 </ion-content>
