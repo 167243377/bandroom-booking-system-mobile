@@ -1,13 +1,13 @@
-import {Component, ViewChild} from '@angular/core';
-import {MenuController, Nav, Platform} from 'ionic-angular';
-import {StatusBar, Splashscreen} from 'ionic-native';
+import { Component, ViewChild } from '@angular/core';
+import { MenuController, Nav, Platform } from 'ionic-angular';
+import { StatusBar, Splashscreen } from 'ionic-native';
 
-import {AboutPage} from '../pages/about/about';
-import {AccountPage} from '../pages/account/account';
-import {ContactPage} from '../pages/contact/contact';
-import {SettingsPage} from '../pages/settings/settings';
-import {SearchPage} from '../pages/search/search';
-import {TabsPage} from "../pages/tabs/tabs";
+import { AboutPage } from '../pages/about/about';
+import { AccountPage } from '../pages/account/account';
+import { ContactPage } from '../pages/contact/contact';
+import { SettingsPage } from '../pages/settings/settings';
+import { SearchPage } from '../pages/search/search';
+import { TabsPage } from "../pages/tabs/tabs";
 
 
 @Component({
@@ -30,19 +30,19 @@ export class MyApp {
   }>;
 
   constructor(private platform: Platform,
-              private menuCtrl: MenuController) {
+    private menuCtrl: MenuController) {
     this.initializeApp();
 
     // used for navigation
     this.mainPages = [
-      {title: 'Home', icon: 'home', component: TabsPage},
-      {title: 'Account', icon: 'contact', component: AccountPage},
+      { title: '主頁', icon: 'home', component: TabsPage },
+      { title: '帳號', icon: 'contact', component: AccountPage },
     ];
 
     this.infoPages = [
-      {title: 'Setting', component: SettingsPage},
-      {title: 'About', component: AboutPage},
-      {title: 'Contact', component: ContactPage},
+      { title: '設定', component: SettingsPage },
+      { title: '關於資訊', component: AboutPage },
+      { title: '聯絡我們', component: ContactPage },
     ];
   }
 

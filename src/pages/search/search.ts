@@ -1,81 +1,81 @@
-import {Component} from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
-import {RoomsPage} from '../rooms/rooms';
-import {DatePicker, StatusBar, SQLite} from 'ionic-native';
-import {RoomService} from "../../services/rooms";
-import {AdvancedSearchPage} from "../advanced-search/advanced-search";
+import { District } from '../../model/district';
+import { RoomType } from '../../model/roomType';
+import { Component } from '@angular/core';
+import { NavController, NavParams } from 'ionic-angular';
+import { RoomsPage } from '../rooms/rooms';
+import { DatePicker } from 'ionic-native';
+import { RoomService } from "../../services/rooms";
 
 @Component({
   selector: 'page-search',
   templateUrl: 'search.html'
 })
 export class SearchPage {
-  public searchCriterias;
-  private roomsPage: RoomsPage;
-  private advancedSearchPage: AdvancedSearchPage;
-  private storage: Storage;
-  public personList: Array<Object>;
+  roomTypes: RoomType[] = [];
+  districts: District[] = [];
 
+  searchCriterias = {
+    districtCode: '',
+    roomTypeCode: '',
+    people: '',
+    searchDate: new Date(),
+    priceRange: {
+      lower: 0,
+      upper: 300,
+    },
+    keyboardRequired: false
+  };
 
+  ngOnInit() {
+    this.roomTypes.push(new RoomType('BandRoom', 'Band房'));
+    this.roomTypes.push(new RoomType('PianoRoom', '鋼琴練習房'));
+    this.roomTypes.push(new RoomType('GuitarRoom', '結他練習房'));
+    this.roomTypes.push(new RoomType('RehearsalRoom', '綵排房'));
 
-  constructor(private navCtrl: NavController,
-              private navParams: NavParams,
-              private roomService: RoomService,) {
+    this.districts.push(new District('KLC', '九龍城'));
+    this.districts.push(new District('KT', '觀塘'));
+    this.districts.push(new District('YTM', '油尖旺'));
+    this.districts.push(new District('SSP', '深水埗'));
+    this.districts.push(new District('WTS', '黃大仙'));
 
+    this.districts.push(new District('TW', '荃灣'));
+    this.districts.push(new District('TM', '屯門'));
+    this.districts.push(new District('YL', '元朗'));
+    this.districts.push(new District('ISL', '離島'));
+    this.districts.push(new District('KWT', '葵青'));
+    this.districts.push(new District('NOR', '北區'));
+    this.districts.push(new District('ST', '沙田'));
+    this.districts.push(new District('TP', '大埔'));
 
-    //initialize searching properties
-    this.searchCriterias = {
-      searchText: '',
-      searchDate: new Date()
-    };
-
-    // initialize local database
-    let db = new SQLite();
-    db.openDatabase({
-      name: 'data.db',
-      location: 'default' // the location field is required
-    }).then(() => {
-      db.executeSql('CREATE TABLE IF NOT EXISTS CheckedRoom(id VARCHAR(255) PRIMARY KEY, count INTEGER)', {}).then(() => {
-      }, (err) => {
-        console.error('Unable to execute sql: ', err);
-      });
-    }, (err) => {
-      console.error('Unable to open database: ', err);
-    });
-
-    //set status bar color
-    StatusBar.overlaysWebView(true); // let status bar overlay webview
-    StatusBar.backgroundColorByHexString('#A30000'); // set status bar to primary color
+    this.districts.push(new District('CNW', '中西區'));
+    this.districts.push(new District('EAST', '東區'));
+    this.districts.push(new District('SOU', '南區'));
+    this.districts.push(new District('WC', '灣仔'));
   }
 
-  //functions
-  onInputDate() {
+  constructor(private navCtrl: NavController,
+    private navParams: NavParams) {
+  }
 
+  onInputDate() {
     DatePicker.show({
       date: new Date(),
       mode: 'date',
       minDate: Date.now(),
       titleText: '選擇日期',
       todayText: '今天',
-      androidTheme: 5  // THEME_DEVICE_DEFAULT_LIGHT = 5
+      androidTheme: 5  // because THEME_DEVICE_DEFAULT_LIGHT = 5
     }).then(
       date => {
         this.searchCriterias.searchDate = date;
       },
       err => {
         console.log('Error occurred while getting date: ', err)
-      }
-    )
-    ;
+      });
   }
 
-  onGoToSearchRooms() {
+  onSearchRooms() {
     this.navCtrl.push(RoomsPage, this.searchCriterias);
   }
-
-  onGoToAdvancedSearchPage() {
-    this.navCtrl.push(AdvancedSearchPage);
-  }
-
 
 }

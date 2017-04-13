@@ -11,7 +11,7 @@
   <ion-card *ngFor="let room of rooms; let i = index"
             (click)="onGoToRoomDetailPage(room)">
     <ion-card-header>
-      {{ room.centerName }}
+      {{ room.center.name }}
     </ion-card-header>
 
     <img class="card-img" src="{{ room.imgs[0] }}"/>

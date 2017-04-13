@@ -1,17 +1,24 @@
-import {Component} from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
-import {Room} from '../../model/room';
+import { Toast } from 'ionic-native/dist/esm';
+
+import { Component } from '@angular/core';
+import { NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
+import { Room } from '../../model/room';
+import { BookformPage } from '../bookform/bookform';
 
 @Component({
   selector: 'page-room',
   templateUrl: 'room.html'
 })
 export class RoomPage {
-  private room: Room;
+  room: Room;
 
   constructor(private navCtrl: NavController,
-              private navParams: NavParams) {
+    private navParams: NavParams,
+    private alertCtrl: AlertController,
+    private toastCtrl: ToastController) {
+
     this.room = <Room>navParams.data;
+    this.loadEvents();
   }
 
   eventSource;
@@ -69,19 +76,24 @@ export class RoomPage {
           endDay += 1;
         }
         endTime = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() + endDay));
-        events.push({
-          title: 'All Day - ' + i,
-          startTime: startTime,
-          endTime: endTime,
-          allDay: true
-        });
+        // events.push({
+        //   title: 'All Day - ' + i,
+        //   startTime: startTime,
+        //   endTime: endTime,
+        //   allDay: true
+        // });
       } else {
+
         var startMinute = Math.floor(Math.random() * 24 * 60);
         var endMinute = Math.floor(Math.random() * 180) + startMinute;
-        startTime = new Date(date.getFullYear(), date.getMonth(), date.getDate() + startDay, 0, date.getMinutes() + startMinute);
-        endTime = new Date(date.getFullYear(), date.getMonth(), date.getDate() + endDay, 0, date.getMinutes() + endMinute);
+
+        startMinute = (date.getMinutes() + startMinute) + ((date.getMinutes() + startMinute) % 15);
+        endMinute = (date.getMinutes() + endMinute) + ((date.getMinutes() + endMinute) % 15);
+
+        startTime = new Date(date.getFullYear(), date.getMonth(), date.getDate() + startDay, 0, startMinute);
+        endTime = new Date(date.getFullYear(), date.getMonth(), date.getDate() + endDay, 0, endMinute);
         events.push({
-          title: 'Event - ' + i,
+          title: '',
           startTime: startTime,
           endTime: endTime,
           allDay: false
@@ -100,5 +112,45 @@ export class RoomPage {
     current.setHours(0, 0, 0);
     return date < current;
   };
+
+  bookNow() {
+
+    let prompt = this.alertCtrl.create({
+      title: '預約',
+      message: "請輸入預約房間資料",
+      inputs: [
+        {
+          name: 'name',
+          placeholder: '聯絡人名稱'
+        },
+        {
+          name: 'phoneNo',
+          placeholder: '聯絡電話'
+        },
+
+      ],
+      buttons: [
+        {
+          text: '返回',
+          handler: data => {
+            //do nothing 
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: '預約',
+          handler: data => {
+            let toast = this.toastCtrl.create({
+              message: '預約成功!',
+              duration: 3000
+            });
+            toast.present();
+          }
+        }
+      ]
+    });
+    prompt.present();
+
+  }
 
 }
