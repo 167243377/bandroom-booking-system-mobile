@@ -8,13 +8,11 @@
 
   </ion-header>
 
-  <ion-content>
+  <ion-content scroll="false">
 
     <ion-list no-margin>
 
-      <button class="menu-content" ion-item no-lines
-              *ngFor="let page of mainPages"
-              (click)="openPage(page)">
+      <button class="menu-content" ion-item no-lines *ngFor="let page of mainPages" (click)="openPage(page)">
 
         <ion-icon [name]="page.icon" item-left></ion-icon>
         {{ page.title }}
@@ -27,10 +25,9 @@
 
     <ion-list no-margin>
 
-      <button ion-item no-lines
-              *ngFor="let page of infoPages"
-              (click)="openPage(page)">
+      <button ion-item no-lines *ngFor="let page of infoPages" (click)="openPage(page)">
 
+        <ion-icon [name]="page.icon" item-left></ion-icon>
         <p>{{page.title}}</p>
 
       </button>
