@@ -20,6 +20,14 @@ import { FavoritePage } from "../pages/favorite/favorite";
 import { TabsPage } from "../pages/tabs/tabs";
 import { AgmCoreModule } from "angular2-google-maps/core";
 
+import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
+
+const cloudSettings: CloudSettings = {
+    'core': {
+        'app_id': '48759dc1'
+    }
+};
+
 @NgModule({
     declarations: [
         MyApp,
@@ -43,7 +51,9 @@ import { AgmCoreModule } from "angular2-google-maps/core";
         // { AgmCoreModule } from "angular2-google-maps/core"; //Google Map
         AgmCoreModule.forRoot({
             apiKey: 'AIzaSyAbvD7D-R25lPAera_P897iml38twjEfJc'
-        })
+        }),
+        CloudModule.forRoot(cloudSettings)
+
     ],
     bootstrap: [IonicApp],
     entryComponents: [

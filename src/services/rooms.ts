@@ -1,5 +1,5 @@
-import {Injectable} from "@angular/core";
-import {Http, Headers} from '@angular/http';
+import { Injectable } from "@angular/core";
+import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
 
 @Injectable()
@@ -39,7 +39,7 @@ export class RoomService {
       let headers = new Headers();
       headers.append('Content-Type', 'application/json');
 
-      this.http.post('http://localhost:8080/api/rooms', JSON.stringify(options), {headers: headers})
+      this.http.post('http://localhost:8080/api/rooms', JSON.stringify(options), { headers: headers })
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
@@ -55,7 +55,7 @@ export class RoomService {
       let headers = new Headers();
       headers.append('Content-Type', 'application/json');
 
-      this.http.post('http://localhost:8080/api/rooms/reserve', JSON.stringify(data), {headers: headers})
+      this.http.post('http://localhost:8080/api/rooms/reserve', JSON.stringify(data), { headers: headers })
         .subscribe((data) => {
           resolve(data);
         });
