@@ -30,14 +30,14 @@
         日期
       </ion-label>
 
-      <button ion-button item-right color="light" (click)="onInputDate()">
+      <ion-input type="date" [(ngModel)]="searchCriterias.searchDate"></ion-input>
+      <!--<button ion-button item-right color="light" (click)="onInputDate()">-->
 
-        <ion-label placeholder="選擇日期">{{ searchCriterias.searchDate.toDateString() }}</ion-label>
+      <!--<ion-label placeholder="選擇日期">{{ searchCriterias.searchDate.toDateString() }}</ion-label>-->
 
-      </button>
+      <!--</button>-->
 
     </ion-item>
-
     <ion-item>
       <ion-label>
         <ion-icon name="key"></ion-icon>

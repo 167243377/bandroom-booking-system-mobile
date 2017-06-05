@@ -2,6 +2,11 @@ import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
+import { NgCalendarModule } from "ionic2-calendar";
+import { AgmCoreModule } from "angular2-google-maps/core";
+
+import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
+
 import { AboutPage } from '../pages/about/about';
 import { AccountPage } from '../pages/account/account';
 import { ContactPage } from '../pages/contact/contact';
@@ -11,16 +16,13 @@ import { RoomPage } from '../pages/room/room';
 import { RoomsPage } from '../pages/rooms/rooms';
 import { BookformPage } from '../pages/bookform/bookform';
 import { ReceiptPage } from '../pages/receipt/receipt';
-
 import { SearchBookingRecordsPage } from '../pages/search-booking-records/search-booking-records';
-
-import { RoomService } from "../services/rooms";
-import { NgCalendarModule } from "ionic2-calendar";
 import { FavoritePage } from "../pages/favorite/favorite";
 import { TabsPage } from "../pages/tabs/tabs";
-import { AgmCoreModule } from "angular2-google-maps/core";
 
-import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
+import { RoomService } from "../services/rooms";
+import { BookingService } from "../services/bookings";
+
 
 const cloudSettings: CloudSettings = {
     'core': {
@@ -72,8 +74,12 @@ const cloudSettings: CloudSettings = {
         SearchBookingRecordsPage,
     ],
     providers: [
-        { provide: ErrorHandler, useClass: IonicErrorHandler },
-        RoomService]
+        {
+            provide: ErrorHandler,
+            useClass: IonicErrorHandler
+        },
+        RoomService,
+        BookingService]
 })
 export class AppModule {
 }

@@ -1,3 +1,4 @@
+import { ToastController } from 'ionic-angular/components/toast/toast';
 import { District } from '../../model/district';
 import { RoomType } from '../../model/roomType';
 import { Component } from '@angular/core';
@@ -26,35 +27,49 @@ export class SearchPage {
     keyboardRequired: false
   };
 
-  ngOnInit() {
-    this.roomTypes.push(new RoomType('BandRoom', 'Band房'));
-    this.roomTypes.push(new RoomType('PianoRoom', '鋼琴練習房'));
-    this.roomTypes.push(new RoomType('GuitarRoom', '結他練習房'));
-    this.roomTypes.push(new RoomType('RehearsalRoom', '綵排房'));
-
-    this.districts.push(new District('KLC', '九龍城'));
-    this.districts.push(new District('KT', '觀塘'));
-    this.districts.push(new District('YTM', '油尖旺'));
-    this.districts.push(new District('SSP', '深水埗'));
-    this.districts.push(new District('WTS', '黃大仙'));
-
-    this.districts.push(new District('TW', '荃灣'));
-    this.districts.push(new District('TM', '屯門'));
-    this.districts.push(new District('YL', '元朗'));
-    this.districts.push(new District('ISL', '離島'));
-    this.districts.push(new District('KWT', '葵青'));
-    this.districts.push(new District('NOR', '北區'));
-    this.districts.push(new District('ST', '沙田'));
-    this.districts.push(new District('TP', '大埔'));
-
-    this.districts.push(new District('CNW', '中西區'));
-    this.districts.push(new District('EAST', '東區'));
-    this.districts.push(new District('SOU', '南區'));
-    this.districts.push(new District('WC', '灣仔'));
+  constructor(
+    private navCtrl: NavController,
+    private navParams: NavParams,
+    private toastCtrl: ToastController,
+    private roomService: RoomService) {
   }
 
-  constructor(private navCtrl: NavController,
-    private navParams: NavParams) {
+  showError(errorMsg: string) {
+    let toast = this.toastCtrl.create({
+      message: errorMsg,
+      duration: 3000,
+      position: 'bottom'
+    });
+
+    toast.present();
+  }
+
+  ngOnInit() { // componment Start method
+    // initializing code tables
+    this.roomService.getRoomTypes().then(res => {
+      let roomTypes: RoomType[] = res;
+
+      for (var i = 0; i < roomTypes.length; i++) {
+        let currentRoomType = roomTypes[i];
+        this.roomTypes.push(new RoomType(currentRoomType.code, currentRoomType.description));
+      }
+
+    }).catch(error => {
+      this.showError(error);
+    })
+
+    this.roomService.getDistricts().then(res => {
+      let districts: District[] = res;
+
+      for (var i = 0; i < districts.length; i++) {
+        let currentDistrict = districts[i];
+        this.roomTypes.push(new RoomType(currentDistrict.code, currentDistrict.description));
+      }
+
+    }).catch(error => {
+      this.showError(error);
+    })
+
   }
 
   onInputDate() {
