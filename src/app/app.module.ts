@@ -23,6 +23,8 @@ import { TabsPage } from "../pages/tabs/tabs";
 import { RoomService } from "../services/rooms";
 import { BookingService } from "../services/bookings";
 
+import { ParamService } from '../services/param';
+
 
 const cloudSettings: CloudSettings = {
     'core': {
@@ -78,6 +80,7 @@ const cloudSettings: CloudSettings = {
             provide: ErrorHandler,
             useClass: IonicErrorHandler
         },
+        ParamService,
         RoomService,
         BookingService]
 })

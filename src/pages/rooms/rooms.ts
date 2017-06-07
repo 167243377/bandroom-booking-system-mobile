@@ -10,7 +10,7 @@ import { Room } from "../../model/room";
 export class RoomsPage {
 
   rooms = [{
-    _id: '1',
+    _id: '7LkqidqEmWDRteBnx',
     center: {
       name: 'BORN．The Music',
       address: '新界屯門石排頭路屯門德雅工業中心A座16樓A3室',
@@ -32,7 +32,7 @@ export class RoomsPage {
     canTeach: false,
     hasKeyboard: true
   }, {
-    _id: '2',
+    _id: '2kogvg6dE8zwTqNv4E',
     center: {
       name: 'SAW MUSIC',
       address: '新界元朗良業街8-12A號嘉華工業大廈506',
