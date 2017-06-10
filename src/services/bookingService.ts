@@ -1,23 +1,17 @@
-import { FormGroup } from '@angular/forms';
+import { AppSettings } from '../appSettings';
 import { Room } from '../model/room';
 import { Injectable } from "@angular/core";
 import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
-import { ParamService } from './param';
 
 @Injectable()
 export class BookingService {
 
-    constructor(
-        private http: Http,
-        public paramService: ParamService) {
+    constructor(private http: Http) {
 
     }
 
     createBooking(room: Room, bookingData) {
-        console.log('came to service');
-        console.log(bookingData.bookDate);
-        console.log(room);
 
         var startDateTime = new Date(bookingData.bookDate);
         startDateTime.setHours(bookingData.startDateTime.split(':')[0]);
@@ -27,15 +21,6 @@ export class BookingService {
         endDateTime.setHours(bookingData.endDateTime.split(':')[0]);
         endDateTime.setMinutes(bookingData.endDateTime.split(':')[1]);
 
-        // var diffDate = endDateTime.valueOf() - startDateTime.valueOf();
-        // var diffHours = Math.floor((diffDate % 86400000) / 3600000);
-        // var diffMintues = (diffHours * 60) + Math.round(((diffDate % 86400000) % 3600000) / 60000); // minutes
-
-        // var totalAmount;
-        // //total mintues / 60 = hours
-
-        // totalAmount = room.price * (diffMintues / 60);
-
         var data = {
             "room": room._id,
             "startDateTime": this.toLocaleISOString(startDateTime),
@@ -44,11 +29,20 @@ export class BookingService {
             "contactName": bookingData.contactName,
         }
 
-        let header = new Headers();
-        header.append('Content-Type', 'application/json');
-
         return new Promise((resolve, reject) => {
-            this.http.post(this.paramService.host + 'api/reservations', JSON.stringify(data), { headers: header })
+            this.http.post(AppSettings.apiHost + 'api/reservations', JSON.stringify(data))
+                .map(res => res.json())
+                .subscribe((response) => {
+                    resolve(response.data);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+    }
+
+    getBooking(receiptNo: string) {
+        return new Promise((resolve, reject) => {
+            this.http.get(AppSettings.apiHost + 'api/reservations/' + receiptNo)
                 .map(res => res.json())
                 .subscribe((response) => {
                     resolve(response.data);

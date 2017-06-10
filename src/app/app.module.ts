@@ -1,6 +1,8 @@
+import { AppSettings } from '../appSettings';
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
+import { Clipboard } from '@ionic-native/clipboard';
 
 import { NgCalendarModule } from "ionic2-calendar";
 import { AgmCoreModule } from "angular2-google-maps/core";
@@ -20,11 +22,10 @@ import { SearchBookingRecordsPage } from '../pages/search-booking-records/search
 import { FavoritePage } from "../pages/favorite/favorite";
 import { TabsPage } from "../pages/tabs/tabs";
 
-import { RoomService } from "../services/rooms";
-import { BookingService } from "../services/bookings";
+import { RoomService } from "../services/roomService";
+import { BookingService } from "../services/bookingService";
 
-import { ParamService } from '../services/param';
-
+import { PhoneNoFormatPipe } from '../customPipes'; // import our pipe here
 
 const cloudSettings: CloudSettings = {
     'core': {
@@ -47,6 +48,7 @@ const cloudSettings: CloudSettings = {
         BookformPage,
         ReceiptPage,
         SearchBookingRecordsPage,
+        PhoneNoFormatPipe
     ],
     imports: [
         IonicModule.forRoot(MyApp),
@@ -80,7 +82,8 @@ const cloudSettings: CloudSettings = {
             provide: ErrorHandler,
             useClass: IonicErrorHandler
         },
-        ParamService,
+        AppSettings,
+        Clipboard,
         RoomService,
         BookingService]
 })

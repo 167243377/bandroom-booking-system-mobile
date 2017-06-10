@@ -1,3 +1,4 @@
+import { LoadingController } from 'ionic-angular/components/loading/loading';
 import { ToastController } from 'ionic-angular/components/toast/toast';
 import { District } from '../../model/district';
 import { RoomType } from '../../model/roomType';
@@ -5,7 +6,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { RoomsPage } from '../rooms/rooms';
 import { DatePicker } from 'ionic-native';
-import { RoomService } from "../../services/rooms";
+import { RoomService } from "../../services/roomService";
 
 @Component({
   selector: 'page-search',
@@ -19,7 +20,7 @@ export class SearchPage {
     districtCode: '',
     roomTypeCode: '',
     people: '',
-    searchDate: new Date(),
+    searchDate: '',
     priceRange: {
       lower: 0,
       upper: 300,
@@ -31,18 +32,10 @@ export class SearchPage {
     private navCtrl: NavController,
     private navParams: NavParams,
     private toastCtrl: ToastController,
-    private roomService: RoomService) {
+    private roomService: RoomService,
+    private loadingCtrl: LoadingController) {
   }
 
-  showError(errorMsg: string) {
-    let toast = this.toastCtrl.create({
-      message: errorMsg,
-      duration: 3000,
-      position: 'bottom'
-    });
-
-    toast.present();
-  }
 
   ngOnInit() { // componment Start method
     // initializing code tables
@@ -63,7 +56,7 @@ export class SearchPage {
 
       for (var i = 0; i < districts.length; i++) {
         let currentDistrict = districts[i];
-        this.roomTypes.push(new RoomType(currentDistrict.code, currentDistrict.description));
+        this.districts.push(new District(currentDistrict.code, currentDistrict.description));
       }
 
     }).catch(error => {
@@ -72,25 +65,37 @@ export class SearchPage {
 
   }
 
-  onInputDate() {
-    DatePicker.show({
-      date: new Date(),
-      mode: 'date',
-      minDate: Date.now(),
-      titleText: '選擇日期',
-      todayText: '今天',
-      androidTheme: 5  // because THEME_DEVICE_DEFAULT_LIGHT = 5
-    }).then(
-      date => {
-        this.searchCriterias.searchDate = date;
-      },
-      err => {
-        console.log('Error occurred while getting date: ', err)
-      });
+  onSearchRooms() {
+
+    let loading = this.loadingCtrl.create({
+      spinner: 'dots',
+      content: 'Loading...'
+    });
+
+    // loading.present();
+  this.navCtrl.push(RoomsPage);
+
+    // this.roomService.searchRooms(this.searchCriterias).then(res => {
+      // this.navCtrl.push(RoomsPage, { room: res });
+
+    // }).catch(error => {
+    //   this.showError(error);
+
+    // }).then(() => {
+    //   loading.dismiss();
+    // })
+
   }
 
-  onSearchRooms() {
-    this.navCtrl.push(RoomsPage, this.searchCriterias);
+
+  showError(errorMsg: string) {
+    let toast = this.toastCtrl.create({
+      message: errorMsg,
+      duration: 3000,
+      position: 'bottom'
+    });
+
+    toast.present();
   }
 
 }

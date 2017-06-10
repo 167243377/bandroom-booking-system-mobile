@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, MenuController, ModalController } from 'ionic-angular';
-import { RoomService } from "../../services/rooms";
+import { RoomService } from "../../services/roomService";
 import { Room } from "../../model/room";
 import { RoomPage } from "../room/room";
 

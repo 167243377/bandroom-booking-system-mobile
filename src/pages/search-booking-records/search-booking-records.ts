@@ -16,7 +16,10 @@ export class SearchBookingRecordsPage {
     }
 
     searchBookingRecords() {
-        this.navCtrl.push(ReceiptPage, { receiptNo: this.receiptNo })
+        this.navCtrl.push(ReceiptPage, {
+            isViewMode: true,
+            receiptNo: this.receiptNo
+        })
     }
 
 }

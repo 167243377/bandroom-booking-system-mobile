@@ -1,9 +1,9 @@
+import { AppSettings } from '../appSettings';
 import { District } from '../model/district';
 import { RoomType } from '../model/roomType';
 import { Injectable } from "@angular/core";
 import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
-import { ParamService } from './param';
 
 @Injectable()
 export class RoomService {
@@ -12,13 +12,12 @@ export class RoomService {
   private roomID: string;
 
   constructor(
-    private http: Http,
-    public paramService: ParamService) {
+    private http: Http) {
   }
 
   getRoomTypes(): Promise<RoomType[]> {
     return new Promise((resolve, reject) => {
-      this.http.get(this.paramService.host + 'api/roomTypes')
+      this.http.get(AppSettings.apiHost + 'api/roomTypes')
         .map(res => res.json())
         .subscribe((response) => {
           resolve(response.data);
@@ -30,7 +29,7 @@ export class RoomService {
 
   getDistricts(): Promise<District[]> {
     return new Promise((resolve, reject) => {
-      this.http.get(this.paramService.host + 'api/districts')
+      this.http.get(AppSettings.apiHost + 'api/districts')
         .map(res => res.json())
         .subscribe((response) => {
           resolve(response.data);
@@ -40,20 +39,24 @@ export class RoomService {
     });
   }
 
-  // getRooms(options) {
+  searchRooms(searchCriterias): Promise<any[]> {
 
-  //   return new Promise(resolve => {
-  //     let headers = new Headers();
-  //     headers.append('Content-Type', 'application/json');
+    return new Promise((resolve, reject) => {
+      this.http.post(AppSettings.apiHost + 'api/rooms', searchCriterias)
+        .map(res => res.json())
+        .subscribe((response) => {
 
-  //     this.http.post('http://localhost:8080/api/rooms', JSON.stringify(options), { headers: headers })
-  //       .map(res => res.json())
-  //       .subscribe(data => {
-  //         resolve(data);
-  //       });
-  //   });
+          console.log('result');
+          console.log(response.data);
 
-  // }
+          resolve(response.data);
+
+        }, (error) => {
+          reject(error);
+        });
+    });
+
+  }
 
   // reserveRoom(data) {
 

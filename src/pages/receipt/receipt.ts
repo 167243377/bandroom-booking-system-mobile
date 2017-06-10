@@ -1,3 +1,4 @@
+import { LoadingController } from 'ionic-angular/components/loading/loading';
 import { FormGroup } from '@angular/forms';
 import { TabsPage } from '../tabs/tabs';
 import { Room } from '../../model/room';
@@ -5,13 +6,11 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
 import { AlertController } from 'ionic-angular';
-import { BookingService } from '../../services/bookings'
-/*
-  Generated class for the ReceiptPage page.
+import { BookingService } from '../../services/bookingService'
 
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
+import { Clipboard } from '@ionic-native/clipboard';
+
+
 @Component({
   selector: 'page-receipt',
   templateUrl: 'receipt.html'
@@ -21,29 +20,64 @@ export class ReceiptPage {
   private bookedRoom: Room;
 
   private isViewMode = false;
+  private receiptNo = "";
+  private pageTitle = "";
+
+  private loadingCtr;
 
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
     private alertCtrl: AlertController,
-    private bookingService: BookingService
+    private bookingService: BookingService,
+    private clipboard: Clipboard,
+    public loadingCtrl: LoadingController
   ) {
     this.bookingData = navParams.get('bookingData');
     this.bookedRoom = navParams.get('selectedRoom');
     this.isViewMode = navParams.get('isViewMode');
+
+    if (this.isViewMode) {
+      this.receiptNo = navParams.get('receiptNo');
+      this.pageTitle = "預約紀錄";
+    }else{
+      //new form
+      this.pageTitle = "確認預約";
+    }
+
+    this.loadingCtr = this.loadingCtrl.create({
+      spinner: 'dots',
+      content: 'Loading...'
+    });
+
+
+  }
+
+  ngOnInit() {
+
+    if (this.isViewMode) {
+      // check booking data will use this logic
+      this.getBooking();
+    } else {
+
+      //get booking and room data from constructor
+    }
   }
 
   confirmBooking() {
-    console.log(this.bookingData);
+    this.loadingCtr.present();
 
     this.bookingService.createBooking(this.bookedRoom, this.bookingData).then((returnedReservationId => {
 
+      this.loadingCtr.dismiss();
+
       let alert = this.alertCtrl.create({
         title: '已成功預約',
-        message: '請保留參考編號: ' + returnedReservationId + ' 以作搜尋紀錄之用途',
+        message: '請保留參考編號: \n' + returnedReservationId.toString() + '\n以作搜尋紀錄之用途',
         buttons: [{
-          text: '確定',
+          text: '複製參考編號及確定',
           handler: () => {
+            this.clipboard.copy(returnedReservationId.toString());
             this.navCtrl.setRoot(TabsPage);
           }
         }]
@@ -51,6 +85,9 @@ export class ReceiptPage {
       alert.present();
 
     })).catch((error) => {
+
+      this.loadingCtr.dismiss();
+
       let alert = this.alertCtrl.create({
         title: '何服器暫時未能預約',
         message: '請等後再試',
@@ -62,6 +99,34 @@ export class ReceiptPage {
     })
 
 
+  }
+
+  getBooking() {
+    // check booking data will use this logic
+    this.loadingCtr.present();
+
+    this.bookingService.getBooking(this.receiptNo).then(response => {
+      let res = <any>response;
+      this.bookedRoom = res.room;
+      this.bookingData = res.bookingData;
+
+    }).catch(error => {
+
+      let alert = this.alertCtrl.create({
+        title: '查詢結果',
+        message: '參考編號: ' + this.receiptNo.toString() + ' 不正確',
+        buttons: [{
+          text: '確定',
+          handler: () => {
+            this.navCtrl.pop();
+          }
+        }]
+      });
+      alert.present();
+
+    }).then(() => {
+      this.loadingCtr.dismiss();
+    });
   }
 
   backToBookform() {
