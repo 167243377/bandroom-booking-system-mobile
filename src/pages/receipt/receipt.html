@@ -1,121 +1,125 @@
 <ion-header>
-  <ion-navbar color="primary">
-    <ion-title color="header">
-      {{ pageTitle }}
-    </ion-title>
-  </ion-navbar>
+	<ion-navbar color="primary">
+		<ion-title color="header">
+			{{ pageTitle }}
+		</ion-title>
+	</ion-navbar>
 </ion-header>
 
 <ion-content padding>
 
-  <ion-grid class="normal-grid" *ngIf="bookedRoom !== undefined && bookingData !== undefined">
+	<ion-grid class="normal-grid" *ngIf="bookedRoom !== undefined && bookingData !== undefined">
 
-    <ion-row>
-      <ion-col>
-        <ion-item no-padding no-margin>
-          <h2>房間資料</h2>
-        </ion-item>
-      </ion-col>
-    </ion-row>
+		<ion-row>
+			<ion-col>
+				<ion-item-group>
+					<ion-item-divider color="primary" no-margin>
+						房間資料
+					</ion-item-divider>
+				</ion-item-group>
+			</ion-col>
+		</ion-row>
 
-    <ion-row>
-      <ion-col>
-        <ion-label>中心</ion-label>
-      </ion-col>
-      <ion-col>
-        <ion-label>{{ bookedRoom.center.name }}</ion-label>
-      </ion-col>
-    </ion-row>
+		<ion-row>
+			<ion-col>
+				<ion-label>中心</ion-label>
+			</ion-col>
+			<ion-col>
+				<ion-label>{{ bookedRoom.center.name }}</ion-label>
+			</ion-col>
+		</ion-row>
 
-    <ion-row>
-      <ion-col>
-        <ion-label>房間</ion-label>
-      </ion-col>
-      <ion-col>
-        <ion-label>{{ bookedRoom.description }}</ion-label>
-      </ion-col>
-    </ion-row>
+		<ion-row>
+			<ion-col>
+				<ion-label>房間</ion-label>
+			</ion-col>
+			<ion-col>
+				<ion-label>{{ bookedRoom.description }}</ion-label>
+			</ion-col>
+		</ion-row>
 
-    <ion-row>
-      <ion-col>
-        <ion-label>日期</ion-label>
-      </ion-col>
-      <ion-col>
-        <ion-label>{{ bookingData.bookDate }}</ion-label>
-      </ion-col>
-    </ion-row>
+		<ion-row>
+			<ion-col>
+				<ion-label>日期</ion-label>
+			</ion-col>
+			<ion-col>
+				<ion-label>{{ bookingData.bookDate }}</ion-label>
+			</ion-col>
+		</ion-row>
 
-    <ion-row>
-      <ion-col>
-        <ion-label>開始時間</ion-label>
-      </ion-col>
-      <ion-col>
-        <ion-label>{{ bookingData.startDateTime }}</ion-label>
-      </ion-col>
-    </ion-row>
+		<ion-row>
+			<ion-col>
+				<ion-label>開始時間</ion-label>
+			</ion-col>
+			<ion-col>
+				<ion-label>{{ bookingData.startDateTime }}</ion-label>
+			</ion-col>
+		</ion-row>
 
-    <ion-row>
-      <ion-col>
-        <ion-label>完結時間</ion-label>
-      </ion-col>
-      <ion-col>
-        <ion-label>{{ bookingData.endDateTime }}</ion-label>
-      </ion-col>
-    </ion-row>
+		<ion-row>
+			<ion-col>
+				<ion-label>完結時間</ion-label>
+			</ion-col>
+			<ion-col>
+				<ion-label>{{ bookingData.endDateTime }}</ion-label>
+			</ion-col>
+		</ion-row>
 
-    <ion-row>
-      <ion-col>
-        <ion-item no-padding no-margin>
-          <h2>個人資料</h2>
-        </ion-item>
-      </ion-col>
-    </ion-row>
+		<ion-row>
+			<ion-col>
+				<ion-item-group>
+					<ion-item-divider color="primary" no-margin>
+						個人資料
+					</ion-item-divider>
+				</ion-item-group>
+			</ion-col>
+		</ion-row>
 
-    <ion-row>
-      <ion-col>
-        <ion-label>聯絡人名稱</ion-label>
-      </ion-col>
-      <ion-col>
-        <ion-label>{{ bookingData.contactName }}</ion-label>
-      </ion-col>
-    </ion-row>
+		<ion-row>
+			<ion-col>
+				<ion-label>聯絡人名稱</ion-label>
+			</ion-col>
+			<ion-col>
+				<ion-label>{{ bookingData.contactName }}</ion-label>
+			</ion-col>
+		</ion-row>
 
-    <ion-row>
-      <ion-col>
-        <ion-label>聯絡人電話</ion-label>
-      </ion-col>
-      <ion-col>
-        <ion-label>{{ bookingData.phoneNo | phoneNoFormat }}</ion-label>
-      </ion-col>
-    </ion-row>
+		<ion-row>
+			<ion-col>
+				<ion-label>聯絡人電話</ion-label>
+			</ion-col>
+			<ion-col>
+				<ion-label>{{ bookingData.phoneNo | phoneNoFormat }}</ion-label>
+			</ion-col>
+		</ion-row>
 
-    <ion-row *ngIf="bookingData.people > 0">
-      <ion-col>
-        <ion-label>人數</ion-label>
-      </ion-col>
-      <ion-col>
-        <ion-label>{{ bookingData.people }}</ion-label>
-      </ion-col>
-    </ion-row>
+		<ion-row *ngIf="bookingData.people > 0">
+			<ion-col>
+				<ion-label>人數</ion-label>
+			</ion-col>
+			<ion-col>
+				<ion-label>{{ bookingData.people }}</ion-label>
+			</ion-col>
+		</ion-row>
 
-  </ion-grid>
+	</ion-grid>
 
 </ion-content>
 
 
 <ion-footer class="ion-footer" *ngIf="!isViewMode">
-  <ion-row>
-    <ion-col>
-      <button class ="full-button" ion-button large round outline icon-left color="primary" (click)="confirmBooking()">
+	<ion-row>
+		<ion-col>
+			<button class="full-button" ion-button large round outline icon-left color="primary" (click)="confirmBooking()">
           <ion-icon name="checkmark"></ion-icon>
           確定
       </button>
-    </ion-col>
-    <ion-col>
-      <button class ="full-button" ion-button large round outline icon-left color="primary" (click)="backToBookform()">
+		</ion-col>
+		<ion-col>
+			<button class="full-button" ion-button large round outline icon-left color="primary" (click)="backToBookform()">
           <ion-icon name="create"></ion-icon>
         更改
-      </button> 
-    </ion-col>
-  </ion-row>
+      </button>
+		</ion-col>
+	</ion-row>
 </ion-footer>

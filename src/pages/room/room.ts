@@ -1,17 +1,37 @@
+import { AppSettings } from '../../appSettings';
+import { RoomService } from '../../services/roomService';
 import { ModalController } from 'ionic-angular';
 import { Toast } from 'ionic-native/dist/esm';
 
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { animate, Component, ElementRef, state, style, transition, trigger, ViewChild } from '@angular/core';
 import { NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
 import { Room } from '../../model/room';
 import { BookformPage } from '../bookform/bookform';
 
 @Component({
     selector: 'page-room',
-    templateUrl: 'room.html'
+    templateUrl: 'room.html',
+    styles: [
+    `
+    .item-block{
+        min-height: 0;
+        transition: 0.09s all linear;
+    }
+    `
+    ],
+    animations: [
+        trigger('expand', [
+            state('true', style({ height: '25px' })),
+            state('false', style({ height: '0' })),
+            transition('void => *', animate('0s')),
+            transition('* <=> *', animate('250ms ease-in-out'))
+        ])
+    ]
 })
 export class RoomPage {
-    private room: Room;
+    private host = AppSettings.apiHost;
+    private roomId;
+    private room;
 
     private eventSource;
     private viewTitle;
@@ -20,6 +40,7 @@ export class RoomPage {
         mode: 'week',
         currentDate: new Date()
     };
+    private isShowCalendar = false;
 
     private markDisabled = (date: Date) => {
         var current = new Date();
@@ -32,10 +53,41 @@ export class RoomPage {
         private navParams: NavParams,
         private alertCtrl: AlertController,
         private toastCtrl: ToastController,
-        public modalCtrl: ModalController) {
+        private modalCtrl: ModalController,
+        private roomService: RoomService) {
 
-        this.room = <Room>navParams.data;
-        this.loadEvents();
+        this.roomId = navParams.get('roomId');
+        // this.loadEvents();
+
+        this.room = {
+            _id: '2kogvg6dE8zwTqNv4E',
+            center: {
+                name: 'SAW MUSIC',
+                address: '新界元朗良業街8-12A號嘉華工業大廈506',
+                contactNumber: '2345 6789',
+                district: {
+                    code: 'YL',
+                    description: '元朗'
+                },
+                lat: 22.449454,
+                lngi: 114.028447
+            },
+            description: "Bandroom",
+            price: "100",
+            images: ["CybqjGNnhm5stokoT", "S9JqC5wRRTsPWKnuf"],
+            roomType: {
+                code: 'drum',
+                description: '鼓房'
+            },
+            canTeach: true,
+            hasKeyboard: false
+        }
+    }
+
+    ngOnInit() {
+        // this.roomService.
+
+
     }
 
 
@@ -119,5 +171,13 @@ export class RoomPage {
 
     bookNow() {
         this.navCtrl.push(BookformPage, { room: this.room });
+    }
+
+    showCalendar() {
+        if (this.isShowCalendar) {
+            this.isShowCalendar = false;
+        } else {
+            this.isShowCalendar = true;
+        }
     }
 }

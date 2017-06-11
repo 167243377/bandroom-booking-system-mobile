@@ -12,6 +12,7 @@ export class BookingService {
     }
 
     createBooking(room: Room, bookingData) {
+        console.log(room);
 
         var startDateTime = new Date(bookingData.bookDate);
         startDateTime.setHours(bookingData.startDateTime.split(':')[0]);
@@ -29,8 +30,10 @@ export class BookingService {
             "contactName": bookingData.contactName,
         }
 
+        console.log(data);
+
         return new Promise((resolve, reject) => {
-            this.http.post(AppSettings.apiHost + 'api/reservations', JSON.stringify(data))
+            this.http.post(AppSettings.apiHost + 'api/reservations', data)
                 .map(res => res.json())
                 .subscribe((response) => {
                     resolve(response.data);

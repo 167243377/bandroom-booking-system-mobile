@@ -8,23 +8,7 @@ import { Storage } from '@ionic/storage';
     templateUrl: 'search-booking-records.html'
 })
 export class SearchBookingRecordsPage {
-    private receiptRecords = [
-        {
-            receiptNo: "wokdowkm25wdwk",
-            data: {
-                bookDate: "2017-06-10",
-                startDateTime: "15:00",
-                endDateTime: "17:00"
-            }
-        }, {
-            receiptNo: "7xqk1owq25wdwk",
-            data: {
-                bookDate: "2017-06-13",
-                startDateTime: "19:00",
-                endDateTime: "21:00"
-            }
-        }
-    ];
+    private receiptRecords = [];
 
     constructor(
         private navCtrl: NavController,
@@ -46,6 +30,7 @@ export class SearchBookingRecordsPage {
     }
 
     deleteReceiptRecord(receiptRecord) {
+
         let alert = this.alertCtrl.create({
             title: '確認執行',
             message: '確定刪除預約紀錄？(紀錄將不能復完）',
@@ -53,9 +38,32 @@ export class SearchBookingRecordsPage {
                 {
                     text: '確定',
                     handler: () => {
-                        delete this.receiptRecords[receiptRecord.receiptNo]
-                        this.storage.set('receiptRecords', this.receiptRecords);
-                        this.refreshSearchData();
+
+                        var deleteIndex = -1;
+
+                        for (var i = 0; i < this.receiptRecords.length; i++) {
+                            var currentReceiptRecord = this.receiptRecords[i];
+
+                            console.log(currentReceiptRecord);
+
+                            console.log(receiptRecord);
+
+                            if (currentReceiptRecord.receiptNo == receiptRecord.receiptNo) {
+                                deleteIndex = i;
+                                break;
+                                //deleted record found, break the loop
+                            }
+                        }
+
+                        //delete the targeted record
+                        //1 = delete 1 item
+                        this.receiptRecords.splice(deleteIndex, 1);
+
+                        this.storage.set('receiptRecords', this.receiptRecords).then(() => {
+                            //after deleteing the record, then we refresh the list
+                            this.refreshSearchData();
+                        });
+
                     }
                 },
                 {
@@ -70,32 +78,50 @@ export class SearchBookingRecordsPage {
     }
 
     deleteAllReceiptRecords() {
-        let alert = this.alertCtrl.create({
-            title: '確認執行',
-            message: '確定刪除所有預約紀錄？(紀錄將不能復完）',
-            buttons: [
-                {
-                    text: '確定',
-                    handler: () => {
-                        this.storage.remove('receiptRecords');
-                        this.refreshSearchData();
+
+        if (this.receiptRecords.length > 0) {
+            let alert = this.alertCtrl.create({
+                title: '確認執行',
+                message: '確定刪除所有預約紀錄？(紀錄將不能復完）',
+                buttons: [
+                    {
+                        text: '確定',
+                        handler: () => {
+                            this.storage.remove('receiptRecords');
+                            this.refreshSearchData();
+                        }
+                    },
+                    {
+                        text: '取消',
+                        role: 'cancel'
+
                     }
-                },
-                {
-                    text: '取消',
-                    role: 'cancel'
+                ]
 
-                }
-            ]
+            });
+            alert.present();
+        } else {
+            let alert = this.alertCtrl.create({
+                title: '確認執行',
+                message: '沒有任何預約紀錄',
+                buttons: [
+                    {
+                        text: '確定'
+                    }
+                ]
 
-        });
-        alert.present();
-
+            });
+            alert.present();
+        }
     }
 
     getReceiptRecords() {
         this.storage.get('receiptRecords').then(val => {
-            this.receiptRecords = val;
+            if (val == undefined || val == null) {
+                this.receiptRecords = [];
+            } else {
+                this.receiptRecords = val;
+            }
         })
     }
 

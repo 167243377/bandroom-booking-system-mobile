@@ -1,105 +1,115 @@
 <ion-header>
-  <ion-navbar color="primary">
-    <ion-title color="header">
-      {{ room.center.name }}
-    </ion-title>
-  </ion-navbar>
+	<ion-navbar color="primary">
+		<ion-title color="header">
+			{{ room.center.name }}
+		</ion-title>
+	</ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <ion-slides no-padding class="normal-slides" effect="slide" loop="true" pager="true" paginationType="bullets" zoom="false">
+	<ion-slides no-padding class="normal-slides" effect="slide" loop="true" pager="true" paginationType="bullets" zoom="false">
 
-    <ion-slide *ngFor="let img of room.imgs">
-      <img src="{{ img }}" />
-    </ion-slide>
-  </ion-slides>
+		<ion-slide *ngFor="let img of room.images">
+			<img src="{{ host + '/cfs/files/Attachments/' + img }}" />
+		</ion-slide>
+	</ion-slides>
 
 
-  <ion-grid>
-    <ion-row center>
-      <ion-col>
-        <h2>{{ room.description }}</h2>
-      </ion-col>
-    </ion-row>
-    <ion-row center>
-      <ion-col>
-        <ion-label>HK$ {{ room.price }} / 小時</ion-label>
-      </ion-col>
-      <ion-col>
-        <ion-buttons end>
-          <button ion-button color="primary" (click)="bookNow()">立即預訂</button>
-        </ion-buttons>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+	<ion-grid>
+		<ion-row center>
+			<ion-col>
+				<h2>{{ room.description }}</h2>
+			</ion-col>
+		</ion-row>
+		<ion-row center>
+			<ion-col>
+				<ion-label>HK$ {{ room.price }} / 小時</ion-label>
+			</ion-col>
+			<ion-col>
+				<ion-buttons end>
+					<button ion-button color="primary" (click)="bookNow()">立即預訂</button>
+				</ion-buttons>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
 
-  <hr>
+	<hr>
 
-  <ion-grid>
-    <ion-row center>
-      <ion-col>
-        <div>
-          <ion-icon name="map"></ion-icon>
-          <br> {{ room.center.district.description }}
-        </div>
-      </ion-col>
+	<ion-grid>
+		<ion-row center>
+			<ion-col>
+				<div text-center>
+					<ion-icon name="map"></ion-icon>
+					<br> {{ room.center.district.description }}
+				</div>
+			</ion-col>
 
-      <ion-col>
-        <div>
-          <ion-icon name="home"></ion-icon>
-          <br> {{ room.roomType.description }}
-        </div>
-      </ion-col>
+			<ion-col>
+				<div text-center>
+					<ion-icon name="home"></ion-icon>
+					<br> {{ room.roomType.description }}
+				</div>
+			</ion-col>
 
-      <ion-col>
-        <div>
-          <ion-icon name="book"></ion-icon>
-          <br> {{ room.canTeach ? '可教學': '不可教學'}}
-        </div>
-      </ion-col>
+			<ion-col>
+				<div text-center>
+					<ion-icon name="book"></ion-icon>
+					<br> {{ room.canTeach ? '可教學': '不可教學'}}
+				</div>
+			</ion-col>
 
-      <ion-col>
-        <div>
-          <ion-icon name="musical-notes"></ion-icon>
-          <br> {{ room.hasKeyboard ? '有電子琴': '無電子琴' }}
-        </div>
-      </ion-col>
+			<ion-col>
+				<div text-center>
+					<ion-icon name="musical-notes"></ion-icon>
+					<br> {{ room.hasKeyboard ? '有電子琴': '無電子琴' }}
+				</div>
+			</ion-col>
 
-    </ion-row>
+		</ion-row>
 
-  </ion-grid>
+	</ion-grid>
 
-  <hr>
+	<hr>
 
-  <p>預約時間狀況</p>
+	<ion-item-divider color="light" (click)="showCalendar()">
+		<ion-icon item-left name="{{ isShowCalendar == false ? 'arrow-forward': 'arrow-down' }}"></ion-icon>
+		預約時間狀況
+	</ion-item-divider>
 
-  <ion-navbar color="primary">
-    <ion-label padding-left="10" color="light" large>{{viewTitle}}</ion-label>
-    <ion-buttons end>
-      <button ion-button (click)="changeToToday()">今天</button>
-      <button ion-button (click)="changeMode('week')">今周</button>
-    </ion-buttons>
-  </ion-navbar>
+	<ion-item [@expand]="isShowCalendar">
 
-  <calendar [markDisabled]="markDisabled" [eventSource]="eventSource" [calendarMode]="calendar.mode" [currentDate]="calendar.currentDate"
-    (onCurrentDateChanged)="onCurrentDateChanged($event)" (onEventSelected)="onEventSelected($event)" (onTitleChanged)="onViewTitleChanged($event)"
-    (onTimeSelected)="onTimeSelected($event)" allDayLabel="" showEventDetail="true" step="30">
-  </calendar>
+		<ion-navbar color="primary">
+			<ion-label padding-left="10" color="light" large>{{viewTitle}}</ion-label>
+			<ion-buttons end>
+				<button ion-button (click)="changeToToday()">今天</button>
+				<button ion-button (click)="changeMode('week')">今周</button>
+			</ion-buttons>
+		</ion-navbar>
 
-  <hr>
+		<calendar [markDisabled]="markDisabled" [eventSource]="eventSource" [calendarMode]="calendar.mode" [currentDate]="calendar.currentDate"
+			(onCurrentDateChanged)="onCurrentDateChanged($event)" (onEventSelected)="onEventSelected($event)" (onTitleChanged)="onViewTitleChanged($event)"
+			(onTimeSelected)="onTimeSelected($event)" allDayLabel="" showEventDetail="true" step="30">
+		</calendar>
 
-  <p>位置</p>
-  <p>{{ room.center.address }}</p>
-  <ion-grid>
-    <ion-row>
-      <ion-col>
-        <sebm-google-map [latitude]="room.center.lat" [longitude]="room.center.lngi" [zoom]="18">
-          <sebm-google-map-marker [latitude]="room.center.lat" [longitude]="room.center.lngi" *ngIf="room">
-          </sebm-google-map-marker>
-        </sebm-google-map>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+	</ion-item>
+
+	<!--
+	<button ion-button color="primary" (click)="showCalendar()" class="full-width-button"> 預約時間狀況 </button>-->
+
+	<hr>
+
+	<p>位置</p>
+	<p>{{ room.center.address }}</p>
+	<ion-grid>
+		<ion-row>
+			<ion-col>
+				<sebm-google-map [latitude]="room.center.lat" [longitude]="room.center.lngi" [zoom]="18">
+					<sebm-google-map-marker [latitude]="room.center.lat" [longitude]="room.center.lngi" *ngIf="room">
+					</sebm-google-map-marker>
+				</sebm-google-map>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
 
 
 </ion-content>

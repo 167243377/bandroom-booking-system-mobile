@@ -39,6 +39,22 @@ export class RoomService {
     });
   }
 
+  searchRoom(roomId): Promise<any> {
+
+    return new Promise((resolve, reject) =>{
+      this.http.get(AppSettings.apiHost + 'api/rooms' + roomId)
+      .map(res => res.json())
+      .subscribe((response) => {
+
+        resolve(JSON.parse(response.data));
+
+      }, (error) => {
+        reject(error);
+      });
+    });
+
+  }
+
   searchRooms(searchCriterias): Promise<any[]> {
 
     return new Promise((resolve, reject) => {
@@ -46,10 +62,7 @@ export class RoomService {
         .map(res => res.json())
         .subscribe((response) => {
 
-          console.log('result');
-          console.log(response.data);
-
-          resolve(response.data);
+          resolve(JSON.parse(response.data));
 
         }, (error) => {
           reject(error);

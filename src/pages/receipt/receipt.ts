@@ -8,7 +8,6 @@ import { NavController, NavParams } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import { BookingService } from '../../services/bookingService'
 
-import { Clipboard } from '@ionic-native/clipboard';
 import { Storage } from '@ionic/storage';
 
 @Component({
@@ -25,14 +24,13 @@ export class ReceiptPage {
 
   private loadingCtr;
 
-  private receiptNos = [];
+  private receiptRecords = [];
 
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
     private alertCtrl: AlertController,
     private bookingService: BookingService,
-    private clipboard: Clipboard,
     public loadingCtrl: LoadingController,
     private storage: Storage
   ) {
@@ -43,7 +41,7 @@ export class ReceiptPage {
     if (this.isViewMode) {
       this.receiptNo = navParams.get('receiptNo');
       this.pageTitle = "預約紀錄";
-    }else{
+    } else {
       //new form
       this.pageTitle = "確認預約";
     }
@@ -76,23 +74,37 @@ export class ReceiptPage {
 
       let alert = this.alertCtrl.create({
         title: '已成功預約',
-        message: '參考編號: ' + returnedReservationId.toString() + ' 以作搜尋紀錄之用途，參考編號亦可在「參考編號紀錄」頁面中尋找',
+        message: '參考編號: ' + returnedReservationId.toString() + ' 以作搜尋紀錄之用途，參考編號亦可在「尋找編號紀錄」頁面中尋找',
         buttons: [{
-          text: '複製參考編號及確定',
+          text: '確定',
           handler: () => {
 
-            this.storage.get('receiptNos').then(val => {
-                  this.receiptNos = val;
+            this.storage.get('receiptRecords').then(val => {
 
-                  if(this.receiptNos == undefined || this.receiptNos == null){
-                    this.receiptNos = [];
-                  }
+              //get records from local storage
 
-                  this.receiptNos.push(returnedReservationId);
-                  this.storage.set('receiptNos', this.receiptNos);
-                  
-                  this.clipboard.copy(returnedReservationId.toString());
-                  this.navCtrl.setRoot(TabsPage);
+              if (val == undefined || val == null) {
+                this.receiptRecords = [];
+              } else {
+                this.receiptRecords = val;
+              }
+
+              //create a new receipt record and push into the storage arrary
+
+              var receiptRecord = {
+                receiptNo: returnedReservationId.toString(),
+                data: {
+                  bookDate: this.bookingData.bookDate,
+                  startDateTime: this.bookingData.startDateTime,
+                  endDateTime: this.bookingData.endDateTime,
+                }
+              }
+
+              this.receiptRecords.unshift(receiptRecord);  
+              //unshift = append the record to the beginning of the arrary, because latest booking must show first
+              this.storage.set('receiptRecords', this.receiptRecords);
+
+              this.navCtrl.setRoot(TabsPage);
             })
 
 

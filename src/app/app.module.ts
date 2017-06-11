@@ -28,7 +28,6 @@ import { BookingService } from "../services/bookingService";
 
 import { PhoneNoFormatPipe } from '../customPipes'; // import our pipe here
 
-
 const cloudSettings: CloudSettings = {
     'core': {
         'app_id': '48759dc1'
@@ -61,8 +60,7 @@ const cloudSettings: CloudSettings = {
             apiKey: 'AIzaSyAbvD7D-R25lPAera_P897iml38twjEfJc'
         }),
         CloudModule.forRoot(cloudSettings),
-        IonicStorageModule.forRoot()
-
+        IonicStorageModule.forRoot(),
     ],
     bootstrap: [IonicApp],
     entryComponents: [

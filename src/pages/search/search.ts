@@ -1,3 +1,5 @@
+import { AlertController } from 'ionic-angular';
+import { ReturnStatement } from '@angular/compiler/src/output/output_ast';
 import { LoadingController } from 'ionic-angular/components/loading/loading';
 import { ToastController } from 'ionic-angular/components/toast/toast';
 import { District } from '../../model/district';
@@ -16,24 +18,17 @@ export class SearchPage {
   roomTypes: RoomType[] = [];
   districts: District[] = [];
 
-  searchCriterias = {
-    districtCode: '',
-    roomTypeCode: '',
-    people: '',
-    searchDate: '',
-    priceRange: {
-      lower: 0,
-      upper: 300,
-    },
-    keyboardRequired: false
-  };
+  public searchCriterias;
 
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
     private toastCtrl: ToastController,
     private roomService: RoomService,
-    private loadingCtrl: LoadingController) {
+    private loadingCtrl: LoadingController,
+    private alertCtrl: AlertController) {
+
+    this.initializeSearchCriteria();
   }
 
 
@@ -72,21 +67,51 @@ export class SearchPage {
       content: 'Loading...'
     });
 
-    // loading.present();
-  this.navCtrl.push(RoomsPage);
+    loading.present();
+    // this.navCtrl.push(RoomsPage);
 
-    // this.roomService.searchRooms(this.searchCriterias).then(res => {
-      // this.navCtrl.push(RoomsPage, { room: res });
+    this.roomService.searchRooms(this.searchCriterias).then(res => {
 
-    // }).catch(error => {
-    //   this.showError(error);
+      if (this.isAnyResultReturned(res)) {
 
-    // }).then(() => {
-    //   loading.dismiss();
-    // })
+        this.navCtrl.push(RoomsPage, { rooms: res });
+
+      } else {
+
+        let alert = this.alertCtrl.create({
+          title: '搜尋結果',
+          message: '沒有任何合適房間，建議擴闊搜尋範圍',
+          buttons: [{
+            text: '確定'
+          }]
+        });
+        alert.present();
+      }
+
+    }).catch(error => {
+
+      this.showError(error);
+
+    }).then(() => {
+      loading.dismiss();
+    })
 
   }
 
+  initializeSearchCriteria() {
+    this.searchCriterias = {
+      districtCode: '',
+      roomTypeCode: '',
+      people: '',
+      searchDate: '',
+      priceRange: {
+        lower: 0,
+        upper: 300,
+      },
+      canUseAsTeaching: false,
+      keyboardRequired: false
+    };
+  }
 
   showError(errorMsg: string) {
     let toast = this.toastCtrl.create({
@@ -96,6 +121,19 @@ export class SearchPage {
     });
 
     toast.present();
+  }
+
+  isAnyResultReturned(apiResponse): boolean {
+
+    if (apiResponse !== null && apiResponse !== undefined) {
+      if (apiResponse.length > 0) {//how many records returned from rest api
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
   }
 
 }

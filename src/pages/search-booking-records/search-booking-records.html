@@ -1,37 +1,37 @@
 <ion-header>
-    <ion-navbar color="primary">
-        <button ion-button menuToggle>
+	<ion-navbar color="primary">
+		<button ion-button menuToggle>
             <ion-icon name="menu"></ion-icon>
         </button>
-        <ion-title>
-            預約紀錄
-        </ion-title>
-        <ion-buttons end>
-            <button ion-button icon-only (click)="deleteAllReceiptRecords()">
+		<ion-title>
+			預約紀錄
+		</ion-title>
+		<ion-buttons end>
+			<button ion-button icon-only (click)="deleteAllReceiptRecords()">
                 <ion-icon name="trash"></ion-icon>
+                <ion-label>刪除所有</ion-label>
             </button>
-        </ion-buttons>
-    </ion-navbar>
+		</ion-buttons>
+	</ion-navbar>
 </ion-header>
 
 <ion-content padding>
 
-    <ion-list *ngIf="receiptRecords !== null && receiptRecords !== undefined">
-        <ion-item-sliding *ngFor="let receiptRecord of receiptRecords">
-            <ion-item (click)="checkReceiptDetail(receiptRecord)">
-                參考編號： {{ receiptRecord.receiptNo }} <br>
-                預約日期： {{ receiptRecord.data.bookDate + " " + receiptRecord.data.startDateTime
-                + " - " + receiptRecord.data.endDateTime }}
-            </ion-item>
+	<ion-list *ngIf="receiptRecords.length > 0">
+		<ion-item-sliding *ngFor="let receiptRecord of receiptRecords">
+			<ion-item (click)="checkReceiptDetail(receiptRecord)">
+				參考編號： {{ receiptRecord.receiptNo }} <br> 預約日期： {{ receiptRecord.data.bookDate + " " + receiptRecord.data.startDateTime
+				+ " - " + receiptRecord.data.endDateTime }}
+			</ion-item>
 
-            <ion-item-options side="right">
-                <button ion-button (click)="deleteReceiptRecord(receiptRecord)">刪除</button>
-            </ion-item-options>
-        </ion-item-sliding>
-    </ion-list>
+			<ion-item-options side="right">
+				<button ion-button (click)="deleteReceiptRecord(receiptRecord)">刪除</button>
+			</ion-item-options>
+		</ion-item-sliding>
+	</ion-list>
 
-    <ion-item *ngIf="receiptRecords == null || receiptRecords == undefined">
-        沒有任何預約紀錄
-    </ion-item>
+	<ion-item *ngIf="receiptRecords.length <= 0">
+		沒有任何預約紀錄
+	</ion-item>
 
 </ion-content>
