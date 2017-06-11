@@ -9,7 +9,7 @@ import { AlertController } from 'ionic-angular';
 import { BookingService } from '../../services/bookingService'
 
 import { Clipboard } from '@ionic-native/clipboard';
-
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'page-receipt',
@@ -25,13 +25,16 @@ export class ReceiptPage {
 
   private loadingCtr;
 
+  private receiptNos = [];
+
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
     private alertCtrl: AlertController,
     private bookingService: BookingService,
     private clipboard: Clipboard,
-    public loadingCtrl: LoadingController
+    public loadingCtrl: LoadingController,
+    private storage: Storage
   ) {
     this.bookingData = navParams.get('bookingData');
     this.bookedRoom = navParams.get('selectedRoom');
@@ -73,12 +76,26 @@ export class ReceiptPage {
 
       let alert = this.alertCtrl.create({
         title: '已成功預約',
-        message: '請保留參考編號: \n' + returnedReservationId.toString() + '\n以作搜尋紀錄之用途',
+        message: '參考編號: ' + returnedReservationId.toString() + ' 以作搜尋紀錄之用途，參考編號亦可在「參考編號紀錄」頁面中尋找',
         buttons: [{
           text: '複製參考編號及確定',
           handler: () => {
-            this.clipboard.copy(returnedReservationId.toString());
-            this.navCtrl.setRoot(TabsPage);
+
+            this.storage.get('receiptNos').then(val => {
+                  this.receiptNos = val;
+
+                  if(this.receiptNos == undefined || this.receiptNos == null){
+                    this.receiptNos = [];
+                  }
+
+                  this.receiptNos.push(returnedReservationId);
+                  this.storage.set('receiptNos', this.receiptNos);
+                  
+                  this.clipboard.copy(returnedReservationId.toString());
+                  this.navCtrl.setRoot(TabsPage);
+            })
+
+
           }
         }]
       });
@@ -114,7 +131,7 @@ export class ReceiptPage {
 
       let alert = this.alertCtrl.create({
         title: '查詢結果',
-        message: '參考編號: ' + this.receiptNo.toString() + ' 不正確',
+        message: '參考編號：' + this.receiptNo.toString() + ' 不正確',
         buttons: [{
           text: '確定',
           handler: () => {

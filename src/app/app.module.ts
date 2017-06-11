@@ -8,6 +8,7 @@ import { NgCalendarModule } from "ionic2-calendar";
 import { AgmCoreModule } from "angular2-google-maps/core";
 
 import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
+import { IonicStorageModule } from '@ionic/storage';
 
 import { AboutPage } from '../pages/about/about';
 import { AccountPage } from '../pages/account/account';
@@ -26,6 +27,7 @@ import { RoomService } from "../services/roomService";
 import { BookingService } from "../services/bookingService";
 
 import { PhoneNoFormatPipe } from '../customPipes'; // import our pipe here
+
 
 const cloudSettings: CloudSettings = {
     'core': {
@@ -58,7 +60,8 @@ const cloudSettings: CloudSettings = {
         AgmCoreModule.forRoot({
             apiKey: 'AIzaSyAbvD7D-R25lPAera_P897iml38twjEfJc'
         }),
-        CloudModule.forRoot(cloudSettings)
+        CloudModule.forRoot(cloudSettings),
+        IonicStorageModule.forRoot()
 
     ],
     bootstrap: [IonicApp],
