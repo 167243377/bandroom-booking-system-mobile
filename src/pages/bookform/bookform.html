@@ -1,72 +1,77 @@
 <ion-header>
-  <ion-navbar color="primary">
-    <ion-title color="header">
-      輸入預約資料
-    </ion-title>
-  </ion-navbar>
+	<ion-navbar color="primary">
+		<ion-title color="header">
+			輸入預約資料
+		</ion-title>
+	</ion-navbar>
 </ion-header>
 
 <ion-content padding>
 
-  <button ion-button color="primary" (click)="showCalendar()" class="full-width-button"> {{ statusTitle }}預約時間狀況 </button>
+	<ion-item-divider color="light" (click)="showCalendar()">
+		<ion-icon item-left name="{{ isShowCalendar == false ? 'arrow-forward': 'arrow-down' }}"></ion-icon>
+		預約時間狀況
+	</ion-item-divider>
 
-  <ion-navbar *ngIf="isShowCalendar" color="primary">
-    <ion-label padding-left="10" color="light" large>{{viewTitle}}</ion-label>
-    <ion-buttons end>
-      <button ion-button (click)="changeToToday()">今天</button>
-      <button ion-button (click)="changeMode('week')">今周</button>
-    </ion-buttons>
-  </ion-navbar>
+	<ion-navbar color="primary" *ngIf="isShowCalendar">
+		<ion-label padding-left="10" color="light" large>{{viewTitle}}</ion-label>
+		<ion-buttons end>
+			<button ion-button (click)="changeToToday()">今天</button>
+			<button ion-button (click)="changeMode('week')">今周</button>
+		</ion-buttons>
+	</ion-navbar>
 
-  <calendar *ngIf="isShowCalendar" [markDisabled]="markDisabled" [eventSource]="eventSource" [calendarMode]="calendar.mode"
-    [currentDate]="calendar.currentDate" (onCurrentDateChanged)="onCurrentDateChanged($event)" (onEventSelected)="onEventSelected($event)"
-    (onTitleChanged)="onViewTitleChanged($event)" (onTimeSelected)="onTimeSelected($event)" allDayLabel="" showEventDetail="true"
-    step="30">
-  </calendar>
+	<calendar *ngIf="isShowCalendar" [markDisabled]="markDisabled" [eventSource]="eventSource" [calendarMode]="calendar.mode"
+		[currentDate]="calendar.currentDate" (onCurrentDateChanged)="onCurrentDateChanged($event)" (onEventSelected)="onEventSelected($event)"
+		(onTitleChanged)="onViewTitleChanged($event)" (onTimeSelected)="onTimeSelected($event)" allDayLabel="" showEventDetail="true"
+		step="30">
+	</calendar>
 
-  <form [formGroup]="bookingForm">
+	<form [formGroup]="bookingForm">
 
-    <ion-item>
-      <ion-label col-5>預約日期</ion-label>
-      <ion-input type="date" formControlName="bookDate"></ion-input>
-    </ion-item>
+		<ion-item>
+			<ion-label col-5>預約日期</ion-label>
+			<ion-input type="date" formControlName="bookDate"></ion-input>
+		</ion-item>
 
-    <ion-item>
-      <ion-label col-5>開始時間</ion-label>
-      <ion-input type="time" formControlName="startDateTime" text-left></ion-input>
-    </ion-item>
+		<ion-item>
+			<ion-label col-5>開始時間</ion-label>
+			<ion-input type="time" formControlName="startDateTime" text-left></ion-input>
+		</ion-item>
 
-    <ion-item>
-      <ion-label col-5>完結時間</ion-label>
-      <ion-input type="time" formControlName="endDateTime" text-left></ion-input>
-    </ion-item>
+		<ion-item>
+			<ion-label col-5>完結時間</ion-label>
+			<ion-input type="time" formControlName="endDateTime" text-left></ion-input>
+		</ion-item>
 
-    <ion-item>
-      <ion-label col-5>聯絡人電話</ion-label>
-      <ion-input type="Number" formControlName="phoneNo" [class.invalid]="!bookingForm.controls.phoneNo.valid && bookingForm.controls.phoneNo.dirty" text-left></ion-input>
-    </ion-item>
+		<ion-item>
+			<ion-label col-5>聯絡人電話</ion-label>
+			<ion-input type="Number" formControlName="phoneNo" [class.invalid]="!bookingForm.controls.phoneNo.valid && bookingForm.controls.phoneNo.dirty"
+				text-left></ion-input>
+		</ion-item>
 
-    <!--<div [hidden]="power.valid || power.pristine" class="alert alert-danger">
+		<!--<div [hidden]="power.valid || power.pristine" class="alert alert-danger">
 			Power is required
 		</div>-->
 
-    <ion-item>
-      <ion-label col-5>聯絡人名稱</ion-label>
-      <ion-input type="text" formControlName="contactName" text-left></ion-input>
-    </ion-item>
+		<ion-item>
+			<ion-label col-5>聯絡人名稱</ion-label>
+			<ion-input type="text" formControlName="contactName" text-left></ion-input>
+		</ion-item>
 
-    <ion-item>
-      <ion-label col-5>人數</ion-label>
-      <ion-input type="Number" formControlName="people" text-left></ion-input>
-    </ion-item>
+		<ion-item>
+			<ion-label col-5>人數</ion-label>
+			<ion-input type="Number" formControlName="people" text-left></ion-input>
+		</ion-item>
 
 
-  </form>
+	</form>
 
 </ion-content>
 
 <ion-footer class="ion-footer">
-
-  <button ion-button full large (click)="form_submit_BookRoom()" [disabled]="!this.bookingForm.valid">確定</button>
-
+	<ion-buttons end>
+		<button ion-button clear color="dark" no-padding (click)="initializeForm()">重置</button>
+		<button ion-button clear color="dark" (click)="form_submit_BookRoom()" [disabled]="!this.bookingForm.valid">確定</button>
+	</ion-buttons>
 </ion-footer>

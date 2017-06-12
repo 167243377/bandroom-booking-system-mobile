@@ -106,20 +106,9 @@
 
 </ion-content>
 
-
 <ion-footer class="ion-footer" *ngIf="!isViewMode">
-	<ion-row>
-		<ion-col>
-			<button class="full-button" ion-button large round outline icon-left color="primary" (click)="confirmBooking()">
-          <ion-icon name="checkmark"></ion-icon>
-          確定
-      </button>
-		</ion-col>
-		<ion-col>
-			<button class="full-button" ion-button large round outline icon-left color="primary" (click)="backToBookform()">
-          <ion-icon name="create"></ion-icon>
-        更改
-      </button>
-		</ion-col>
-	</ion-row>
+	<ion-buttons end>
+		<button ion-button clear color="dark" no-padding (click)="backToBookform()">更改</button>
+		<button ion-button clear color="dark" (click)="confirmBooking()">確定</button>
+	</ion-buttons>
 </ion-footer>

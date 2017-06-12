@@ -1,7 +1,7 @@
 import { ReceiptPage } from '../receipt/receipt';
 import { Room } from '../../model/room';
 import { Component } from '@angular/core';
-import { NavController, NavParams, ViewController } from 'ionic-angular';
+import { DateTime, NavController, NavParams, ViewController } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
 import { PhoneNoValidator } from '../../pages/bookform/validators/phoneNo';
@@ -39,14 +39,7 @@ export class BookformPage {
         this.room = navParams.get('room');
 
         //initialize the form group object, what attributes should it has
-        this.bookingForm = this.formBuilder.group({
-            bookDate: ['2017-06-04', Validators.required],
-            startDateTime: ['15:00', Validators.required],
-            endDateTime: ['17:00', Validators.required],
-            phoneNo: ['53265230', Validators.compose([Validators.required, PhoneNoValidator.isValid])], // custom validation
-            contactName: ['Kong', Validators.maxLength(30)],
-            people: ['1', Validators.maxLength(1)]
-        })
+        this.initializeForm();
         // other ready-to-use validations
         // Validators.minLength(4),
         // Validators.maxLength(24),
@@ -66,6 +59,17 @@ export class BookformPage {
         })
     }
 
+    initializeForm() {
+        this.bookingForm = this.formBuilder.group({
+            bookDate: [new Date().toDateString(), Validators.required],
+            startDateTime: ['', Validators.required],
+            endDateTime: ['', Validators.required],
+            phoneNo: ['', Validators.compose([Validators.required, PhoneNoValidator.isValid])], // custom validation
+            contactName: ['', Validators.maxLength(30)],
+            people: ['', Validators.maxLength(1)]
+        })
+    }
+    
     loadEvents() {
         this.eventSource = this.createRandomEvents();
     }

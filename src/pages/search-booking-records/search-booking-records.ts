@@ -85,16 +85,16 @@ export class SearchBookingRecordsPage {
                 message: '確定刪除所有預約紀錄？(紀錄將不能復完）',
                 buttons: [
                     {
+                        text: '取消',
+                        role: 'cancel'
+
+                    },
+                    {
                         text: '確定',
                         handler: () => {
                             this.storage.remove('receiptRecords');
                             this.refreshSearchData();
                         }
-                    },
-                    {
-                        text: '取消',
-                        role: 'cancel'
-
                     }
                 ]
 

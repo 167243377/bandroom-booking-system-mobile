@@ -3,44 +3,60 @@ import { RoomService } from '../../services/roomService';
 import { ModalController } from 'ionic-angular';
 import { Toast } from 'ionic-native/dist/esm';
 
-import { animate, Component, ElementRef, state, style, transition, trigger, ViewChild } from '@angular/core';
+import { Component, ElementRef, state, trigger, ViewChild } from '@angular/core';
 import { NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
 import { Room } from '../../model/room';
 import { BookformPage } from '../bookform/bookform';
 
+import { Storage } from '@ionic/storage';
+
 @Component({
     selector: 'page-room',
-    templateUrl: 'room.html',
-    styles: [
-    `
-    .item-block{
-        min-height: 0;
-        transition: 0.09s all linear;
-    }
-    `
-    ],
-    animations: [
-        trigger('expand', [
-            state('true', style({ height: '25px' })),
-            state('false', style({ height: '0' })),
-            transition('void => *', animate('0s')),
-            transition('* <=> *', animate('250ms ease-in-out'))
-        ])
-    ]
+    templateUrl: 'room.html'
 })
 export class RoomPage {
     private host = AppSettings.apiHost;
     private roomId;
-    private room;
+
+    private room = {
+        center: {
+            name: "",
+            address: "",
+            contactNumber: "",
+            district: {
+                code: "",
+                description: "",
+            },
+            lat: "",
+            lngi: "",
+            nonAvailablePeriod: "",
+        },
+        description: "",
+        price: "",
+        images: [],
+        gears: [],
+        roomType: {
+            code: "",
+            description: "",
+        },
+        canTeach: false,
+        hasKeyboard: false,
+        roomNonAvailablePeriod: "",
+        businessHours: "",
+    }
+
+    private isShowCalendar = false;
+    private isShowGears = false;
+    private isFavorite = false;
 
     private eventSource;
     private viewTitle;
+
     private calendar = {
         // default view = week
         mode: 'week',
         currentDate: new Date()
     };
-    private isShowCalendar = false;
 
     private markDisabled = (date: Date) => {
         var current = new Date();
@@ -54,42 +70,82 @@ export class RoomPage {
         private alertCtrl: AlertController,
         private toastCtrl: ToastController,
         private modalCtrl: ModalController,
-        private roomService: RoomService) {
+        private roomService: RoomService,
+        private storage: Storage) {
 
         this.roomId = navParams.get('roomId');
         // this.loadEvents();
-
-        this.room = {
-            _id: '2kogvg6dE8zwTqNv4E',
-            center: {
-                name: 'SAW MUSIC',
-                address: '新界元朗良業街8-12A號嘉華工業大廈506',
-                contactNumber: '2345 6789',
-                district: {
-                    code: 'YL',
-                    description: '元朗'
-                },
-                lat: 22.449454,
-                lngi: 114.028447
-            },
-            description: "Bandroom",
-            price: "100",
-            images: ["CybqjGNnhm5stokoT", "S9JqC5wRRTsPWKnuf"],
-            roomType: {
-                code: 'drum',
-                description: '鼓房'
-            },
-            canTeach: true,
-            hasKeyboard: false
-        }
     }
 
     ngOnInit() {
-        // this.roomService.
+        this.roomService.searchRoom(this.roomId).then(res => {
+            console.log(res);
+            this.room = res;
+        }).catch(err => {
 
+            var alert = this.alertCtrl.create({
+                message: err,
+                // message: "何服器暫時未能提供服務，請稍後再試",
+                buttons: [{
+                    text: '確定',
+                }]
+            });
 
+            alert.present();
+        })
+
+        this.checkIsFavorite().then(isFavorite => {
+            this.isFavorite = isFavorite;
+        })
     }
 
+    checkIsFavorite(): Promise<boolean> {
+        return this.storage.get('favorites').then(val => {
+            var favoriteList: string[];
+
+            if (val == undefined || val == null) {
+                return false;
+            } else {
+                favoriteList = <string[]>val;
+
+                if (favoriteList.indexOf(this.roomId) == -1) {
+                    //  -1 means that the roomid is not found
+                    return false;
+                } else {
+                    //found in favorite list,
+                    return true;
+                }
+            }
+        });
+    }
+
+    setFavorite() {
+        this.storage.get('favorites').then(val => {
+            var favoriteList: string[];
+
+            if (val == undefined || val == null) {
+                favoriteList = [];
+            } else {
+                favoriteList = <string[]>val;
+            }
+
+            if (this.isFavorite) {
+                //then we remove the favorite
+                favoriteList.splice(favoriteList.indexOf(this.roomId), 1);
+                this.storage.set('favorites', favoriteList);
+            } else {
+                //then we add to favorite
+
+                favoriteList.push(this.roomId);
+
+                this.storage.set('favorites', favoriteList);
+            }
+        }).then(() => {
+            this.checkIsFavorite().then(isFavorite => {
+                this.isFavorite = isFavorite;
+            })
+        })
+    }
 
     loadEvents() {
         this.eventSource = this.createRandomEvents();
@@ -174,10 +230,10 @@ export class RoomPage {
     }
 
     showCalendar() {
-        if (this.isShowCalendar) {
-            this.isShowCalendar = false;
-        } else {
-            this.isShowCalendar = true;
-        }
+        this.isShowCalendar = !this.isShowCalendar;
+    }
+
+    showGears() {
+        this.isShowGears = !this.isShowGears;
     }
 }
