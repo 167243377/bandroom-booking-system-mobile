@@ -13,30 +13,30 @@
 
 <ion-content padding>
 
-	<ion-list>
+	<ion-list *ngIf="favoriteRooms.length > 0">
 
-		<!--<ion-item-sliding *ngFor="let favoriteRoom of favoriteRooms">
+		<ion-item-sliding *ngFor="let favoriteRoom of favoriteRooms">
 
-			<ion-item (click)="onGoToRoomDetailPage(favoriteRoom)">
+			<ion-item (click)="goToRoomDetailPage(favoriteRoom._id)">
 
 				<h2>{{ favoriteRoom.centerName }}</h2>
 
-				<img class="card-img" src="{{ room.imgs[0] }}" />-->
+				<img class="card-img" src="{{ host + '/cfs/files/Attachments/' +  favoriteRoom.images[0] }}" />-->
 
-		<!--<p>{{ room.description }}</p>-->
+				<p>{{ favoriteRoom.description }}</p>
 
-		<!--</ion-item>-->
+			</ion-item>
 
-		<!--<ion-item-options>
+			<ion-item-options>
+				<button ion-button color="danger" (click)="removeFromFavorites(favoriteRoom._id)">
+         		 	<ion-icon name="trash"></ion-icon>
+         			 Delete
+        		</button>
 
-				<button ion-button color="danger" (click)="onRemoveFromFavorites(favoriteRoom)">
-          <ion-icon name="trash"></ion-icon>
-          Delete
-        </button>
+			</ion-item-options>
 
-			</ion-item-options>-->
+		</ion-item-sliding>
 
-		<!--</ion-item-sliding>-->
 	</ion-list>
 
 </ion-content>
