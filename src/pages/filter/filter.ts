@@ -7,16 +7,14 @@ import { Component } from '@angular/core';
 })
 export class FilterPage {
     private rooms;
-    private selectedFilterValue;
-    private filterOptions = ['sort_price_lowToHigh', 'sort_price_highToLow'];
-
+    private selectedSortingOption;
+  
     constructor(
         private viewCtrl: ViewController,
         private navParam: NavParams) {
 
         this.rooms = navParam.get('rooms');
-        this.selectedFilterValue = navParam.get('selectedFilterValue');
-        console.log(this.selectedFilterValue);
+        this.selectedSortingOption = navParam.get('selectedSortingOption');
     }
 
     sort_price_lowToHigh() {
@@ -26,7 +24,7 @@ export class FilterPage {
         });
 
         let data = {
-            selectedFilterValue: 'sort_price_lowToHigh'
+            selectedSortingOption: 'sort_price_lowToHigh'
         }
 
         this.viewCtrl.dismiss(data);
@@ -39,7 +37,7 @@ export class FilterPage {
         });
 
         let data = {
-            selectedFilterValue: 'sort_price_highToLow'
+            selectedSortingOption: 'sort_price_highToLow'
         }
 
         this.viewCtrl.dismiss(data);

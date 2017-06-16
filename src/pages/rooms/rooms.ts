@@ -1,4 +1,3 @@
-
 import { FilterPage } from '../filter/filter';
 import { AppSettings } from '../../appSettings';
 import { Component } from '@angular/core';
@@ -13,18 +12,13 @@ import { Room } from "../../model/room";
 export class RoomsPage {
   private host = AppSettings.apiHost;
   private rooms;
-  private selectedFilterValue;
+  private selectedSortingOption;
 
   constructor(private navCtrl: NavController,
     private navParams: NavParams,
     private modalCtrl: ModalController) {
 
     this.rooms = navParams.get('rooms');
-    console.log(this.rooms);
-    // roomId: currentRoom._id,
-    // districtDescription: currentRoomDistrict.description,
-    // roomTypeDescription: currentRoomRoomType.description,
-    // price: currentRoom.price
   }
 
   onGoToRoomDetailPage(roomId) {
@@ -36,7 +30,7 @@ export class RoomsPage {
     let filterModal = this.modalCtrl.create(FilterPage,
       {
         rooms: this.rooms,
-        selectedFilterValue: this.selectedFilterValue
+        selectedSortingOption: this.selectedSortingOption
       },
       {
         showBackdrop: true,
@@ -44,8 +38,7 @@ export class RoomsPage {
       });
 
     filterModal.onDidDismiss(data => {
-      this.selectedFilterValue = data.selectedFilterValue;
-      console.log(this.selectedFilterValue);
+      this.selectedSortingOption = data.selectedFilterValue;
     });
 
     filterModal.present();
