@@ -7,6 +7,11 @@
 		<ion-title>
 			已收藏房間
 		</ion-title>
+		<ion-buttons end>
+			<button ion-button icon-only (click)="deleteAllFavoriteRooms()">
+                <ion-icon name="trash"></ion-icon>
+            </button>
+		</ion-buttons>
 	</ion-navbar>
 
 </ion-header>
@@ -38,5 +43,9 @@
 		</ion-item-sliding>
 
 	</ion-list>
+
+	<ion-item *ngIf="favoriteRooms.length == 0">
+		沒有任何已收藏的房間
+	</ion-item>
 
 </ion-content>

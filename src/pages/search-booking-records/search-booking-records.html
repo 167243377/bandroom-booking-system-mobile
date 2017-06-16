@@ -9,7 +9,6 @@
 		<ion-buttons end>
 			<button ion-button icon-only (click)="deleteAllReceiptRecords()">
                 <ion-icon name="trash"></ion-icon>
-                <ion-label>刪除所有</ion-label>
             </button>
 		</ion-buttons>
 	</ion-navbar>
@@ -30,7 +29,7 @@
 		</ion-item-sliding>
 	</ion-list>
 
-	<ion-item *ngIf="receiptRecords.length <= 0">
+	<ion-item *ngIf="receiptRecords.length == 0">
 		沒有任何預約紀錄
 	</ion-item>
 

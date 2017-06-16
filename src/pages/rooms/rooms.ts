@@ -1,6 +1,7 @@
+import { FilterPage } from '../filter/filter';
 import { AppSettings } from '../../appSettings';
 import { Component } from '@angular/core';
-import { NavController, NavParams, NavOptions } from 'ionic-angular';
+import { NavController, NavParams, NavOptions, PopoverController } from 'ionic-angular';
 import { RoomPage } from '../room/room';
 import { Room } from "../../model/room";
 
@@ -13,7 +14,8 @@ export class RoomsPage {
   private rooms;
 
   constructor(private navCtrl: NavController,
-    private navParams: NavParams) {
+    private navParams: NavParams,
+    private popoverCtrl: PopoverController) {
 
     this.rooms = navParams.get('rooms');
     console.log(this.rooms);
@@ -25,5 +27,12 @@ export class RoomsPage {
 
   onGoToRoomDetailPage(roomId) {
     this.navCtrl.push(RoomPage, { 'roomId': roomId });
+  }
+
+
+  ShowFilter() {
+    let popover = this.popoverCtrl.create(FilterPage);
+    popover.present({
+    });
   }
 }

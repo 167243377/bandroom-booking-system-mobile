@@ -75,13 +75,11 @@ export class RoomService {
     }
 
     getFavoriteRooms(favoriteRoomIds): Promise<any[]> {
-      console.log(favoriteRoomIds);
+
         return new Promise((resolve, reject) => {
             this.http.post(AppSettings.apiHost + 'api/favoriteRooms', favoriteRoomIds)
                 .map(res => res.json())
                 .subscribe((response) => {
-
-                    console.log(response);
 
                     resolve(JSON.parse(response.data));
 

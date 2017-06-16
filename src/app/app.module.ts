@@ -1,3 +1,4 @@
+import { FilterPage } from '../pages/filter/filter';
 import { AppSettings } from '../appSettings';
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
@@ -35,6 +36,17 @@ const cloudSettings: CloudSettings = {
 };
 
 @NgModule({
+    imports: [
+        IonicModule.forRoot(MyApp),
+
+        NgCalendarModule,
+        // { AgmCoreModule } from "angular2-google-maps/core"; //Google Map
+        AgmCoreModule.forRoot({
+            apiKey: 'AIzaSyAbvD7D-R25lPAera_P897iml38twjEfJc'
+        }),
+        CloudModule.forRoot(cloudSettings),
+        IonicStorageModule.forRoot(),
+    ],
     declarations: [
         MyApp,
         AboutPage,
@@ -49,18 +61,8 @@ const cloudSettings: CloudSettings = {
         BookformPage,
         ReceiptPage,
         SearchBookingRecordsPage,
-        PhoneNoFormatPipe
-    ],
-    imports: [
-        IonicModule.forRoot(MyApp),
-
-        NgCalendarModule,
-        // { AgmCoreModule } from "angular2-google-maps/core"; //Google Map
-        AgmCoreModule.forRoot({
-            apiKey: 'AIzaSyAbvD7D-R25lPAera_P897iml38twjEfJc'
-        }),
-        CloudModule.forRoot(cloudSettings),
-        IonicStorageModule.forRoot(),
+        PhoneNoFormatPipe,
+        FilterPage
     ],
     bootstrap: [IonicApp],
     entryComponents: [
@@ -77,6 +79,7 @@ const cloudSettings: CloudSettings = {
         BookformPage,
         ReceiptPage,
         SearchBookingRecordsPage,
+        FilterPage
     ],
     providers: [
         {

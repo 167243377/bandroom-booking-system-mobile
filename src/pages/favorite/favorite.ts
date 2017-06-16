@@ -45,11 +45,11 @@ export class FavoritePage {
             this.storage.set('favorites', favoriteList);
 
         }).then(() => {
-            this.refreshData();
+            this.refreshSearchData();
         })
     }
 
-    refreshData() {
+    refreshSearchData() {
         this.getFavoriteRooms();
     }
 
@@ -61,7 +61,11 @@ export class FavoritePage {
 
                 favoriteRoomIds = <string[]>val;
 
-                this.roomsService.getFavoriteRooms(favoriteRoomIds).then(res => {
+                let favoritesRoomIdsJSON = {
+                    'favoriteRoomIds': favoriteRoomIds
+                }
+
+                this.roomsService.getFavoriteRooms(favoritesRoomIdsJSON).then(res => {
                     this.favoriteRooms = res;
                     console.log(this.favoriteRooms);
                 }).catch(error => {
@@ -77,6 +81,43 @@ export class FavoritePage {
                 })
             }
         });
+    }
+
+    deleteAllReceiptRecords() {
+        if (this.favoriteRooms.length > 0) {
+            let alert = this.alertCtrl.create({
+                title: '確認執行',
+                message: '確定刪除所有預約紀錄？(紀錄將不能復完）',
+                buttons: [
+                    {
+                        text: '取消',
+                        role: 'cancel'
+
+                    },
+                    {
+                        text: '確定',
+                        handler: () => {
+                            this.storage.remove('favorites');
+                            this.refreshSearchData();
+                        }
+                    }
+                ]
+
+            });
+            alert.present();
+        } else {
+            let alert = this.alertCtrl.create({
+                title: '確認執行',
+                message: '沒有任何收藏房間',
+                buttons: [
+                    {
+                        text: '確定'
+                    }
+                ]
+
+            });
+            alert.present();
+        }
     }
 
 }
