@@ -79,7 +79,6 @@ export class RoomPage {
 
     ngOnInit() {
         this.roomService.searchRoom(this.roomId).then(res => {
-            console.log(res);
             this.room = res;
         }).catch(err => {
 

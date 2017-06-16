@@ -1,7 +1,8 @@
+
 import { FilterPage } from '../filter/filter';
 import { AppSettings } from '../../appSettings';
 import { Component } from '@angular/core';
-import { NavController, NavParams, NavOptions, PopoverController } from 'ionic-angular';
+import { NavController, NavParams, NavOptions, ModalController, PopoverController } from 'ionic-angular';
 import { RoomPage } from '../room/room';
 import { Room } from "../../model/room";
 
@@ -12,10 +13,11 @@ import { Room } from "../../model/room";
 export class RoomsPage {
   private host = AppSettings.apiHost;
   private rooms;
+  private selectedFilterValue;
 
   constructor(private navCtrl: NavController,
     private navParams: NavParams,
-    private popoverCtrl: PopoverController) {
+    private modalCtrl: ModalController) {
 
     this.rooms = navParams.get('rooms');
     console.log(this.rooms);
@@ -31,8 +33,23 @@ export class RoomsPage {
 
 
   ShowFilter() {
-    let popover = this.popoverCtrl.create(FilterPage);
-    popover.present({
+    let filterModal = this.modalCtrl.create(FilterPage,
+      {
+        rooms: this.rooms,
+        selectedFilterValue: this.selectedFilterValue
+      },
+      {
+        showBackdrop: true,
+        enableBackdropDismiss: true
+      });
+
+    filterModal.onDidDismiss(data => {
+      this.selectedFilterValue = data.selectedFilterValue;
+      console.log(this.selectedFilterValue);
     });
+
+    filterModal.present();
+
   }
+
 }

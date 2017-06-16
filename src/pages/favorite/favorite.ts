@@ -83,11 +83,11 @@ export class FavoritePage {
         });
     }
 
-    deleteAllReceiptRecords() {
+    deleteAllFavoriteRooms() {
         if (this.favoriteRooms.length > 0) {
             let alert = this.alertCtrl.create({
                 title: '確認執行',
-                message: '確定刪除所有預約紀錄？(紀錄將不能復完）',
+                message: '確定刪除所有收藏房間？(紀錄將不能復完）',
                 buttons: [
                     {
                         text: '取消',
