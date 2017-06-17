@@ -1,13 +1,9 @@
 import { AlertController } from 'ionic-angular';
-import { ReturnStatement } from '@angular/compiler/src/output/output_ast';
-import { LoadingController } from 'ionic-angular/components/loading/loading';
-import { ToastController } from 'ionic-angular/components/toast/toast';
 import { District } from '../../model/district';
 import { RoomType } from '../../model/roomType';
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, ToastController, LoadingController } from 'ionic-angular';
 import { RoomsPage } from '../rooms/rooms';
-import { DatePicker } from 'ionic-native';
 import { RoomService } from "../../services/roomService";
 
 @Component({

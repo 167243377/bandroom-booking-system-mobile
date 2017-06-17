@@ -1,0 +1,66 @@
+<ng-template #modalContent let-close="close">
+	<div class="modal-header">
+		<h5 class="modal-title">Event action occurred</h5>
+		<button type="button" class="close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+	</div>
+	<div class="modal-body">
+		<div>
+			Action:
+			<pre>{{ modalData?.action }}</pre>
+		</div>
+		<div>
+			Event:
+			<pre>{{ modalData?.event | json }}</pre>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-secondary" (click)="close()">OK</button>
+	</div>
+</ng-template>
+
+<ion-grid>
+	<ion-row>
+		<ion-col>
+			<div text-center>
+				<h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'zh' }}</h3>
+			</div>
+		</ion-col>
+	</ion-row>
+	<ion-row>
+		<ion-col>
+			<ion-buttons>
+				<button ion-button class="primary" icon-only mwlCalendarPreviousView [(viewDate)]="viewDate" no-margin>
+					<ion-icon name="arrow-back"></ion-icon>
+				</button>
+				<button ion-button class="light" mwlCalendarToday [(viewDate)]="viewDate" no-margin>
+					Today
+				</button>
+				<button ion-button class="primary" icon-only mwlCalendarNextView [(viewDate)]="viewDate" no-margin>
+					<ion-icon name="arrow-forward"></ion-icon>
+				</button>
+			</ion-buttons>
+		</ion-col>
+		<ion-col>
+			<ion-buttons end>
+				<button ion-button class="primary" (click)="view = 'week'" [class.active]="view === 'week'">
+					Week
+				</button>
+				<button ion-button class="primary" (click)="view = 'day'" [class.active]="view === 'day'">
+					Day
+				</button>
+			</ion-buttons>
+		</ion-col>
+	</ion-row>
+</ion-grid>
+
+<div [ngSwitch]="view">
+	<mwl-calendar-week-view *ngSwitchCase="'week'" [viewDate]="viewDate" [events]="events" [refresh]="refresh" (eventClicked)="handleEvent('Clicked', $event.event)"
+		(eventTimesChanged)="eventTimesChanged($event)">
+	</mwl-calendar-week-view>
+
+	<mwl-calendar-day-view *ngSwitchCase="'day'" [viewDate]="viewDate" [events]="events" [refresh]="refresh" (eventClicked)="handleEvent('Clicked', $event.event)"
+		(eventTimesChanged)="eventTimesChanged($event)">
+	</mwl-calendar-day-view>
+</div>

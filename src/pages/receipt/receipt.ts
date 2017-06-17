@@ -1,11 +1,9 @@
-import { LoadingController } from 'ionic-angular/components/loading/loading';
-import { FormGroup } from '@angular/forms';
 import { TabsPage } from '../tabs/tabs';
 import { Room } from '../../model/room';
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
-import { AlertController } from 'ionic-angular';
+import { AlertController, LoadingController } from 'ionic-angular';
 import { BookingService } from '../../services/bookingService'
 
 import { Storage } from '@ionic/storage';
@@ -100,7 +98,7 @@ export class ReceiptPage {
                 }
               }
 
-              this.receiptRecords.unshift(receiptRecord);  
+              this.receiptRecords.unshift(receiptRecord);
               //unshift = append the record to the beginning of the arrary, because latest booking must show first
               this.storage.set('receiptRecords', this.receiptRecords);
 

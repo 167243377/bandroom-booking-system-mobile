@@ -27,7 +27,17 @@ import { TabsPage } from "../pages/tabs/tabs";
 import { RoomService } from "../services/roomService";
 import { BookingService } from "../services/bookingService";
 
-import { PhoneNoFormatPipe } from '../customPipes'; // import our pipe here
+import { PhoneNoFormatPipe } from '../customPipes';
+import { CalendarComponent } from "angular2-fullcalendar/src/calendar/calendar";
+import { FullCalendarComponent } from '../components/full-calendar/full-calendar'; // import our pipe here
+import { CalendarModule } from 'angular-calendar';
+
+
+import { BrowserModule } from '@angular/platform-browser';
+import { HttpModule } from '@angular/http';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 const cloudSettings: CloudSettings = {
     'core': {
@@ -45,7 +55,13 @@ const cloudSettings: CloudSettings = {
             apiKey: 'AIzaSyAbvD7D-R25lPAera_P897iml38twjEfJc'
         }),
         CloudModule.forRoot(cloudSettings),
+        CalendarModule.forRoot(),
         IonicStorageModule.forRoot(),
+        BrowserModule,
+        HttpModule,
+        NgbModule.forRoot(),
+        BrowserAnimationsModule,
+        NgbModalModule.forRoot(),
     ],
     declarations: [
         MyApp,
@@ -62,7 +78,9 @@ const cloudSettings: CloudSettings = {
         ReceiptPage,
         SearchBookingRecordsPage,
         PhoneNoFormatPipe,
-        FilterPage
+        FilterPage,
+        CalendarComponent,
+        FullCalendarComponent
     ],
     bootstrap: [IonicApp],
     entryComponents: [
@@ -80,6 +98,9 @@ const cloudSettings: CloudSettings = {
         ReceiptPage,
         SearchBookingRecordsPage,
         FilterPage
+    ],
+    exports: [
+        FullCalendarComponent
     ],
     providers: [
         {
