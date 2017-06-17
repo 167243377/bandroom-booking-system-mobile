@@ -96,6 +96,8 @@ export class RoomPage {
         this.checkIsFavorite().then(isFavorite => {
             this.isFavorite = isFavorite;
         })
+
+        this.loadEvents();
     }
 
     checkIsFavorite(): Promise<boolean> {
@@ -150,13 +152,6 @@ export class RoomPage {
         this.eventSource = this.createRandomEvents();
     }
 
-    onViewTitleChanged(title) {
-        this.viewTitle = title;
-    }
-
-    onEventSelected(event) {
-        console.log('Event selected:' + event.startTime + '-' + event.endTime + ',' + event.title);
-    }
 
     changeMode(mode) {
         this.calendar.mode = mode;
@@ -165,11 +160,6 @@ export class RoomPage {
     changeToToday() {
         this.calendar.currentDate = new Date();
         this.changeMode('day');
-    }
-
-    onTimeSelected(ev) {
-        console.log('Selected time: ' + ev.selectedTime + ', hasEvents: ' +
-            (ev.events !== undefined && ev.events.length !== 0) + ', disabled: ' + ev.disabled);
     }
 
     onCurrentDateChanged(event: Date) {
@@ -220,18 +210,12 @@ export class RoomPage {
         return events;
     }
 
-    onRangeChanged(ev) {
-        console.log('range changed: startTime: ' + ev.startTime + ', endTime: ' + ev.endTime);
-    }
-
     bookNow() {
         this.navCtrl.push(BookformPage, { room: this.room });
     }
-
     showCalendar() {
         this.isShowCalendar = !this.isShowCalendar;
     }
-
     showGears() {
         this.isShowGears = !this.isShowGears;
     }

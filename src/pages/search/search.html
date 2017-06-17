@@ -36,7 +36,7 @@
 				日期
 			</ion-label>
 
-			<ion-input type="date" [(ngModel)]="searchCriterias.searchDate"></ion-input>
+			<ion-input type="date" min="{{minDate}}" max="{{maxDate}}" [(ngModel)]="searchCriterias.searchDate"></ion-input>
 			<!--<button ion-button item-right color="light" (click)="onInputDate()">-->
 
 			<!--<ion-label placeholder="選擇日期">{{ searchCriterias.searchDate.toDateString() }}</ion-label>-->
