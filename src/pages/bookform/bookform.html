@@ -13,25 +13,25 @@
 		預約時間狀況
 	</ion-item-divider>
 
-	<ion-navbar color="primary" *ngIf="isShowCalendar">
+	<!--<ion-navbar color="primary" *ngIf="isShowCalendar">
 		<ion-label padding-left="10" color="light" large>{{viewTitle}}</ion-label>
 		<ion-buttons end>
 			<button ion-button (click)="changeToToday()">今天</button>
 			<button ion-button (click)="changeMode('week')">今周</button>
 		</ion-buttons>
-	</ion-navbar>
+	</ion-navbar>-->
 
-	<calendar *ngIf="isShowCalendar" [markDisabled]="markDisabled" [eventSource]="eventSource" [calendarMode]="calendar.mode"
+	<!--<calendar *ngIf="isShowCalendar" [markDisabled]="markDisabled" [eventSource]="eventSource" [calendarMode]="calendar.mode"
 		[currentDate]="calendar.currentDate" (onCurrentDateChanged)="onCurrentDateChanged($event)" (onEventSelected)="onEventSelected($event)"
 		(onTitleChanged)="onViewTitleChanged($event)" (onTimeSelected)="onTimeSelected($event)" allDayLabel="" showEventDetail="true"
 		step="30">
-	</calendar>
+	</calendar>-->
 
 	<form [formGroup]="bookingForm">
 
 		<ion-item>
 			<ion-label col-5>預約日期</ion-label>
-			<ion-input type="date" formControlName="bookDate"></ion-input>
+			<ion-input type="date" min="{{minDate}}" max="{{maxDate}}" formControlName="bookDate"></ion-input>
 		</ion-item>
 
 		<ion-item>

@@ -11,6 +11,8 @@ import { PhoneNoValidator } from '../../pages/bookform/validators/phoneNo';
     templateUrl: 'bookform.html'
 })
 export class BookformPage {
+    private minDate;
+    private maxDate;
     room: Room;
     private bookingForm: FormGroup;
     private eventSource;
@@ -68,6 +70,17 @@ export class BookformPage {
             contactName: ['', Validators.maxLength(30)],
             people: ['', Validators.maxLength(1)]
         })
+
+        this.minDate = new Date();
+        this.minDate = this.minDate.getFullYear()
+            + '-' + ('0' + (this.minDate.getMonth() + 1)).slice(-2)
+            + '-' + ('0' + this.minDate.getDate()).slice(-2)
+
+        this.maxDate = new Date();
+        this.maxDate.setDate(new Date().getDate() + 14);
+        this.maxDate = this.maxDate.getFullYear()
+            + '-' + ('0' + (this.maxDate.getMonth() + 1)).slice(-2)
+            + '-' + ('0' + this.maxDate.getDate()).slice(-2)
     }
     
     loadEvents() {

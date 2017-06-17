@@ -10,6 +10,38 @@ import { BookformPage } from '../bookform/bookform';
 
 import { Storage } from '@ionic/storage';
 
+import {
+    startOfDay,
+    endOfDay,
+    subDays,
+    addDays,
+    endOfMonth,
+    isSameDay,
+    isSameMonth,
+    addHours
+} from 'date-fns'
+
+import {
+    CalendarEvent,
+    CalendarEventAction,
+    CalendarEventTimesChangedEvent
+} from 'angular-calendar';
+
+const colors: any = {
+    red: {
+        primary: '#ad2121',
+        secondary: '#FAE3E3'
+    },
+    blue: {
+        primary: '#1e90ff',
+        secondary: '#D1E8FF'
+    },
+    yellow: {
+        primary: '#e3bc08',
+        secondary: '#FDF1BA'
+    }
+};
+
 @Component({
     selector: 'page-room',
     templateUrl: 'room.html'
@@ -17,6 +49,7 @@ import { Storage } from '@ionic/storage';
 export class RoomPage {
     private host = AppSettings.apiHost;
     private roomId;
+    private events: CalendarEvent[];
 
     private room = {
         center: {
@@ -49,21 +82,6 @@ export class RoomPage {
     private isShowGears = false;
     private isFavorite = false;
 
-    private eventSource;
-    private viewTitle;
-
-    private calendar = {
-        // default view = week
-        mode: 'week',
-        currentDate: new Date()
-    };
-
-    private markDisabled = (date: Date) => {
-        var current = new Date();
-        current.setHours(0, 0, 0, 0);
-        return date < current;
-    };
-
     constructor(
         private navCtrl: NavController,
         private navParams: NavParams,
@@ -78,8 +96,23 @@ export class RoomPage {
     }
 
     ngOnInit() {
+        //get room detail
         this.roomService.searchRoom(this.roomId).then(res => {
             this.room = res;
+
+            console.log(this.room.bookedPeriods);
+
+            // this.room.bookedPeriods.map(bookedPeriod =>{
+
+            //     let bookedEvent = {
+            //         start: new Date(bookedPeriod.startDateTime),
+            //         end: new Date(bookedPeriod.endDateTime),
+            //         title: 'booked',
+            //         color: colors.red
+            //     }
+
+            //     this.events.push(bookedEvent);
+            // })
         }).catch(err => {
 
             var alert = this.alertCtrl.create({
@@ -93,11 +126,10 @@ export class RoomPage {
             alert.present();
         })
 
+        // set favorite
         this.checkIsFavorite().then(isFavorite => {
             this.isFavorite = isFavorite;
         })
-
-        this.loadEvents();
     }
 
     checkIsFavorite(): Promise<boolean> {
@@ -146,68 +178,6 @@ export class RoomPage {
                 this.isFavorite = isFavorite;
             })
         })
-    }
-
-    loadEvents() {
-        this.eventSource = this.createRandomEvents();
-    }
-
-
-    changeMode(mode) {
-        this.calendar.mode = mode;
-    }
-
-    changeToToday() {
-        this.calendar.currentDate = new Date();
-        this.changeMode('day');
-    }
-
-    onCurrentDateChanged(event: Date) {
-        var today = new Date();
-        today.setHours(0, 0, 0, 0);
-        event.setHours(0, 0, 0, 0);
-    }
-
-    createRandomEvents() {
-        var events = [];
-        for (var i = 0; i < 50; i += 1) {
-            var date = new Date();
-            var eventType = Math.floor(Math.random() * 2);
-            var startDay = Math.floor(Math.random() * 90) - 45;
-            var endDay = Math.floor(Math.random() * 2) + startDay;
-            var startTime;
-            var endTime;
-            if (eventType === 0) {
-                startTime = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() + startDay));
-                if (endDay === startDay) {
-                    endDay += 1;
-                }
-                endTime = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() + endDay));
-                events.push({
-                    title: '',
-                    startTime: startTime,
-                    endTime: endTime,
-                    allDay: false
-                });
-            } else {
-
-                var startMinute = Math.floor(Math.random() * 24 * 60);
-                var endMinute = Math.floor(Math.random() * 180) + startMinute;
-
-                startMinute = (date.getMinutes() + startMinute) + ((date.getMinutes() + startMinute) % 15);
-                endMinute = (date.getMinutes() + endMinute) + ((date.getMinutes() + endMinute) % 15);
-
-                startTime = new Date(date.getFullYear(), date.getMonth(), date.getDate() + startDay, 0, startMinute);
-                endTime = new Date(date.getFullYear(), date.getMonth(), date.getDate() + endDay, 0, endMinute);
-                events.push({
-                    title: '',
-                    startTime: startTime,
-                    endTime: endTime,
-                    allDay: false
-                });
-            }
-        }
-        return events;
     }
 
     bookNow() {

@@ -5,7 +5,6 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { Clipboard } from '@ionic-native/clipboard';
 
-import { NgCalendarModule } from "ionic2-calendar";
 import { AgmCoreModule } from "angular2-google-maps/core";
 
 import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
@@ -28,7 +27,6 @@ import { RoomService } from "../services/roomService";
 import { BookingService } from "../services/bookingService";
 
 import { PhoneNoFormatPipe } from '../customPipes';
-import { CalendarComponent } from "angular2-fullcalendar/src/calendar/calendar";
 import { FullCalendarComponent } from '../components/full-calendar/full-calendar'; // import our pipe here
 import { CalendarModule } from 'angular-calendar';
 
@@ -48,8 +46,6 @@ const cloudSettings: CloudSettings = {
 @NgModule({
     imports: [
         IonicModule.forRoot(MyApp),
-
-        NgCalendarModule,
         // { AgmCoreModule } from "angular2-google-maps/core"; //Google Map
         AgmCoreModule.forRoot({
             apiKey: 'AIzaSyAbvD7D-R25lPAera_P897iml38twjEfJc'
@@ -79,7 +75,6 @@ const cloudSettings: CloudSettings = {
         SearchBookingRecordsPage,
         PhoneNoFormatPipe,
         FilterPage,
-        CalendarComponent,
         FullCalendarComponent
     ],
     bootstrap: [IonicApp],

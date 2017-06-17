@@ -33,16 +33,11 @@ export class SearchPage {
             + '-' + ('0' + (this.minDate.getMonth() + 1)).slice(-2)
             + '-' + ('0' + this.minDate.getDate()).slice(-2)
 
-        console.log(this.minDate);
-
         this.maxDate = new Date();
         this.maxDate.setDate(new Date().getDate() + 14);
         this.maxDate = this.maxDate.getFullYear()
             + '-' + ('0' + (this.maxDate.getMonth() + 1)).slice(-2)
             + '-' + ('0' + this.maxDate.getDate()).slice(-2)
-
-
-        console.log(this.maxDate);
     }
 
 

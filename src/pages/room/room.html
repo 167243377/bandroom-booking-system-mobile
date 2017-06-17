@@ -77,23 +77,8 @@
 
 	<hr>
 	<p>預約時間狀況</p>
-	<ion-navbar color="primary">
-		<ion-label padding-left="10" color="light" large>{{viewTitle}}</ion-label>
-		<ion-buttons end>
-			<button ion-button (click)="changeToToday()">今天</button>
-			<button ion-button (click)="changeMode('week')">今周</button>
-		</ion-buttons>
-	</ion-navbar>
 
-	<calendar [markDisabled]="markDisabled" [eventSource]="eventSource" [calendarMode]="calendar.mode" [currentDate]="calendar.currentDate"
-		(onCurrentDateChanged)="onCurrentDateChanged($event)" allDayLabel="" noEventsLabel="No Reservation" step="30">
-	</calendar>
-
-
-	<hr>
-	<p>預約時間狀況2</p>
-
-	<full-calendar></full-calendar>
+	<full-calendar [events]="events"></full-calendar>
 
 	<hr>
 	<p>設備</p>
