@@ -76,12 +76,10 @@
 	</ion-grid>
 
 	<hr>
-	<p>預約時間狀況</p>
-
-	<full-calendar [events]="events"></full-calendar>
+	<full-calendar [events]="events" [viewDate]="defaultStartDate"></full-calendar>
 
 	<hr>
-	<p>設備</p>
+	<b>設備</b>
 
 	<ul *ngIf="room.gears !== undefined && room.gears.length > 0">
 		<li *ngFor="let gear of room.gears">{{ gear }}</li>
@@ -92,7 +90,7 @@
 	<button ion-button color="primary" (click)="showCalendar()" class="full-width-button"> 預約時間狀況 </button>-->
 	<hr>
 
-	<p>位置</p>
+	<b>位置</b>
 	<p>{{ room.center.address }}</p>
 	<ion-grid>
 		<ion-row>

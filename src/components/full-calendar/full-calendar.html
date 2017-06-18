@@ -1,12 +1,19 @@
+<p (click)="showCalendar()" mwlCalendarToday [(viewDate)]="viewDate">
+	<b>預約時間狀況 (兩星期預約資料)</b>
+</p>
+
+<ion-icon item-left name="{{ isShowCalendar == false ? 'arrow-forward': 'arrow-down' }}" (click)="showCalendar()" mwlCalendarToday
+	[(viewDate)]="viewDate"></ion-icon>
+
 <ion-grid>
-	<ion-row>
+	<ion-row *ngIf="isShowCalendar">
 		<ion-col>
 			<h4 text-center>{{ viewDate | calendarDate:(view + 'ViewTitle'):'zh' }}</h4>
 		</ion-col>
 	</ion-row>
-	<ion-row>
+	<ion-row *ngIf="isShowCalendar">
 		<ion-col>
-			<ion-buttons start>
+			<!--<ion-buttons start>
 				<button ion-button color="primary" small icon-only mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate">
 					<ion-icon name="arrow-back"></ion-icon>
 				</button>
@@ -16,7 +23,20 @@
 				<button ion-button color="primary" small icon-only mwlCalendarNextView [view]="view" [(viewDate)]="viewDate">
 					<ion-icon name="arrow-forward"></ion-icon>
 				</button>
-			</ion-buttons>
+			</ion-buttons>-->
+
+			<ion-segment>
+				<button ion-button color="primary" small icon-only mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate">
+					<ion-icon name="arrow-back"></ion-icon>
+				</button>
+				<button ion-button color="primary" small mwlCalendarToday [(viewDate)]="viewDate">
+					今天
+				</button>
+				<button ion-button color="primary" small icon-only mwlCalendarNextView [view]="view" [(viewDate)]="viewDate">
+					<ion-icon name="arrow-forward"></ion-icon>
+				</button>
+			</ion-segment>
+
 		</ion-col>
 		<!--<ion-col>
 			<ion-buttons end>
@@ -29,11 +49,11 @@
 			</ion-buttons>
 		</ion-col>-->
 	</ion-row>
-	<ion-row>
+	<ion-row *ngIf="isShowCalendar">
 		<ion-col>
 			<div [ngSwitch]="view">
 				<!--<mwl-calendar-week-view *ngSwitchCase="'week'" [viewDate]="viewDate" [events]="events"> </mwl-calendar-week-view>-->
-				<mwl-calendar-day-view *ngSwitchCase="'day'" [viewDate]="viewDate" [events]="events" eventWidth="200"> </mwl-calendar-day-view>
+				<mwl-calendar-day-view *ngSwitchCase="'day'" [viewDate]="viewDate" [events]="events" eventWidth="200" hourSegments="1"> </mwl-calendar-day-view>
 			</div>
 		</ion-col>
 	</ion-row>

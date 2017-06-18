@@ -18,6 +18,21 @@ export class SearchPage {
 
     public searchCriterias;
 
+    initializeSearchCriteria() {
+        this.searchCriterias = {
+            districtCode: '',
+            roomTypeCode: '',
+            people: '',
+            searchDate: '',
+            priceRange: {
+                lower: 0,
+                upper: 300,
+            },
+            canUseAsTeaching: false,
+            keyboardRequired: false
+        };
+    }
+
     constructor(
         private navCtrl: NavController,
         private navParams: NavParams,
@@ -83,7 +98,7 @@ export class SearchPage {
 
             if (this.isAnyResultReturned(res)) {
 
-                this.navCtrl.push(RoomsPage, { rooms: res });
+                this.navCtrl.push(RoomsPage, { 'rooms': res, 'searchCriterias': this.searchCriterias });
 
             } else {
 
@@ -105,21 +120,6 @@ export class SearchPage {
             loading.dismiss();
         })
 
-    }
-
-    initializeSearchCriteria() {
-        this.searchCriterias = {
-            districtCode: '',
-            roomTypeCode: '',
-            people: '',
-            searchDate: '',
-            priceRange: {
-                lower: 0,
-                upper: 300,
-            },
-            canUseAsTeaching: false,
-            keyboardRequired: false
-        };
     }
 
     showError(errorMsg: string) {

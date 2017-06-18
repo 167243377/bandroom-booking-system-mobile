@@ -49,7 +49,8 @@ const colors: any = {
 export class RoomPage {
     private host = AppSettings.apiHost;
     private roomId;
-    private events: CalendarEvent[];
+    private events: CalendarEvent[] = [];
+    public defaultStartDate: Date;
 
     private room = {
         center: {
@@ -62,7 +63,38 @@ export class RoomPage {
             },
             lat: "",
             lngi: "",
-            nonAvailablePeriod: "",
+            nonAvailablePeriod: [],
+            businessHours: {
+                monday: {
+                    isOpen: true,
+                    startTime: "10:00",
+                    endTime: "00:00"
+                }, tuesday: {
+                    isOpen: true,
+                    startTime: "10:00",
+                    endTime: "00:00"
+                }, wednesday: {
+                    isOpen: true,
+                    startTime: "10:00",
+                    endTime: "00:00"
+                }, thursday: {
+                    isOpen: true,
+                    startTime: "10:00",
+                    endTime: "00:00"
+                }, friday: {
+                    isOpen: true,
+                    startTime: "10:00",
+                    endTime: "00:00"
+                }, saturday: {
+                    isOpen: true,
+                    startTime: "10:00",
+                    endTime: "00:00"
+                }, sunday: {
+                    isOpen: true,
+                    startTime: "10:00",
+                    endTime: "00:00"
+                }
+            }
         },
         description: "",
         price: "",
@@ -72,10 +104,10 @@ export class RoomPage {
             code: "",
             description: "",
         },
+        bookedPeriods: [],
         canTeach: false,
         hasKeyboard: false,
-        roomNonAvailablePeriod: "",
-        businessHours: "",
+        roomNonAvailablePeriod: []
     }
 
     private isShowCalendar = false;
@@ -92,7 +124,13 @@ export class RoomPage {
         private storage: Storage) {
 
         this.roomId = navParams.get('roomId');
-        // this.loadEvents();
+
+        if (navParams.get('searchDate') !== "") {
+            this.defaultStartDate = new Date(navParams.get('searchDate'));
+        } else {
+            this.defaultStartDate = new Date();
+            this.defaultStartDate.setHours(0, 0, 0, 0);
+        }
     }
 
     ngOnInit() {
@@ -100,19 +138,157 @@ export class RoomPage {
         this.roomService.searchRoom(this.roomId).then(res => {
             this.room = res;
 
-            console.log(this.room.bookedPeriods);
+            console.log(this.room);
 
-            // this.room.bookedPeriods.map(bookedPeriod =>{
+            //Add 4 nonAvailableBookingPeriod
 
-            //     let bookedEvent = {
-            //         start: new Date(bookedPeriod.startDateTime),
-            //         end: new Date(bookedPeriod.endDateTime),
-            //         title: 'booked',
-            //         color: colors.red
-            //     }
+            //#1 booked periods
+            this.room.bookedPeriods.map(bookedPeriod => {
 
-            //     this.events.push(bookedEvent);
-            // })
+                let event: CalendarEvent = {
+                    start: new Date(bookedPeriod.startDateTime),
+                    end: new Date(bookedPeriod.endDateTime),
+                    title: '已有預約: ' + this.getTimeString(new Date(bookedPeriod.startDateTime)) + ' - ' + this.getTimeString(new Date(bookedPeriod.endDateTime)),
+                    color: colors.red
+                }
+
+                this.events.push(event);
+            })
+
+            //#2 room non-avalidable booking day
+            this.room.roomNonAvailablePeriod.map(nonAvailableBookingPeriod => {
+
+                let startDate = new Date(nonAvailableBookingPeriod.startDate);
+                startDate.setHours(0, 0, 0, 0);
+                let endDate = new Date(nonAvailableBookingPeriod.endDate);
+                endDate.setHours(24, 0, 0, 0);
+
+                let event: CalendarEvent = {
+                    start: startDate,
+                    end: endDate,
+                    title: '房間暫停預約: ' + this.getTimeString(startDate) + ' - ' + this.getTimeString(endDate),
+                    color: colors.yellow
+                }
+
+                this.events.push(event);
+            })
+
+            //#3 center non-avalidable booking day
+            this.room.center.nonAvailablePeriod.map(nonAvailableBookingPeriod => {
+                let startDate = new Date(nonAvailableBookingPeriod.startDate);
+                startDate.setHours(0, 0, 0, 0);
+                let endDate = new Date(nonAvailableBookingPeriod.endDate);
+                endDate.setHours(24, 0, 0, 0);
+
+                let event: CalendarEvent = {
+                    start: startDate,
+                    end: endDate,
+                    title: '中心暫停營業: ' + this.getTimeString(startDate) + ' - ' + this.getTimeString(endDate),
+                    color: colors.yellow
+                }
+
+                this.events.push(event);
+            })
+
+            //#4 center non-avalidable booking day
+            for (var i = 0; i < 14; i++) {
+                //14 days information will be provided, so we loop 14 times to check the business day
+                // if any periods are not the business hours, we will create an event to simulate a non avalidable booking period
+
+                let currentDateStarTime = addDays(new Date(), i);
+                currentDateStarTime.setHours(0, 0, 0, 0);
+
+                let currentDateEndTime = addDays(new Date(), i);
+                currentDateEndTime.setHours(24, 0, 0, 0);
+
+                let weekDayBusinessHour;
+
+                console.log(currentDateStarTime.getDay());
+
+                switch (currentDateStarTime.getDay()) {
+                    case 1:
+                        weekDayBusinessHour = this.room.center.businessHours[0].monday;
+                        break;
+                    case 2:
+                        weekDayBusinessHour = this.room.center.businessHours[0].tuesday;
+                        break;
+                    case 3:
+                        weekDayBusinessHour = this.room.center.businessHours[0].wednesday;
+                        break;
+                    case 4:
+                        weekDayBusinessHour = this.room.center.businessHours[0].thursday;
+                        break;
+                    case 5:
+                        weekDayBusinessHour = this.room.center.businessHours[0].friday;
+                        break;
+                    case 6:
+                        weekDayBusinessHour = this.room.center.businessHours[0].saturday;
+                        break;
+                    case 0:
+                        weekDayBusinessHour = this.room.center.businessHours[0].sunday;
+                        break;
+                }
+
+                console.log(weekDayBusinessHour);
+
+                if (weekDayBusinessHour.isOpen) {
+                    // add two events, one is before businessHour, another is after  businessHour
+                    let businessHourStart = weekDayBusinessHour.startTime;
+                    let businessHourEnd = weekDayBusinessHour.endTime;
+
+                    let businessStartHour = parseInt(businessHourStart.split(':')[0]);
+                    let businessStartMin = parseInt(businessHourStart.split(':')[1]);
+
+                    let businessEndHour = parseInt(businessHourEnd.split(':')[0]);
+                    let businessEndtMin = parseInt(businessHourEnd.split(':')[1]);
+
+                    let businessHourStartDateTime = addDays(new Date(), i);
+                    businessHourStartDateTime.setHours(businessStartHour, businessStartMin, 0, 0);
+
+                    let businessHourEndDateTime = addDays(new Date(), i);
+                    businessHourEndDateTime.setHours(businessEndHour, businessEndtMin, 0, 0);
+
+                    let beforeBusinessHourEvent = {
+                        start: currentDateStarTime,
+                        end: businessHourStartDateTime,
+                        title: '非營業時間: ' + this.getTimeString(currentDateStarTime) + ' - ' + this.getTimeString(businessHourStartDateTime),
+                        color: colors.yellow
+                    }
+
+                    console.log('beforeBusinessHourEvent');
+                    console.log(beforeBusinessHourEvent);
+
+                    this.events.push(beforeBusinessHourEvent);
+
+                    if (businessEndHour != 0) {
+                        // not closed on or after 00:00 am
+                        let afterBusinessHourEvent = {
+                            start: businessHourEndDateTime,
+                            end: currentDateEndTime,
+                            title: '非營業時間: ' + this.getTimeString(businessHourEndDateTime) + ' - ' + this.getTimeString(currentDateEndTime),
+                            color: colors.yellow
+                        }
+
+                        console.log('afterBusinessHourEvent');
+                        console.log(afterBusinessHourEvent);
+
+                        this.events.push(afterBusinessHourEvent);
+                    }
+
+
+                } else {
+                    // add a all day event
+                    let businessHourEvent = {
+                        start: currentDateStarTime,
+                        end: currentDateEndTime,
+                        title: '非營業時間: ' + this.getTimeString(currentDateStarTime) + ' - ' + this.getTimeString(currentDateEndTime),
+                        color: colors.yellow
+                    }
+
+                    this.events.push(businessHourEvent);
+                }
+            }
+
         }).catch(err => {
 
             var alert = this.alertCtrl.create({
@@ -188,5 +364,9 @@ export class RoomPage {
     }
     showGears() {
         this.isShowGears = !this.isShowGears;
+    }
+
+    getTimeString(dateTime) {
+        return dateTime.toLocaleTimeString().split(':')[0] + ':' + dateTime.toLocaleTimeString().split(':')[1]
     }
 }

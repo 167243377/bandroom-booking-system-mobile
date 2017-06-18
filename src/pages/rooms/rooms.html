@@ -8,6 +8,11 @@
 
 <ion-content padding>
 
+	<ion-refresher (ionRefresh)="onSearchRooms($event)">
+		<ion-refresher-content pullingText="拉下更新搜尋結果" refreshingText="更新中...">
+		</ion-refresher-content>
+	</ion-refresher>
+
 	<ion-card *ngFor="let room of rooms; let i = index" (click)="onGoToRoomDetailPage(room.id)">
 
 		<img class="card-img" *ngIf="room.images.length > 0" src="{{ host + '/cfs/files/Attachments/' + room.images[0] }}" />
@@ -25,7 +30,7 @@
 	</ion-card>
 
 	<ion-fab bottom right>
-		<button ion-fab color="primary" (click) = "ShowFilter()">
+		<button ion-fab color="primary" (click)="ShowFilter()">
 			<ion-icon name="funnel"></ion-icon>
 		</button>
 
