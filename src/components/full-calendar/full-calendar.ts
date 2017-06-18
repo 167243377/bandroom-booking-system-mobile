@@ -56,11 +56,26 @@ export class FullCalendarComponent {
     }
 
     ngOnInit() {
-        this.viewDate = new Date(this.viewDate.getFullYear(), this.viewDate.getMonth(), this.viewDate.getDate());
     }
-    
-    showCalendar(){
+
+    showCalendar() {
         this.isShowCalendar = !this.isShowCalendar;
+    }
+
+    isPreviousViewButtonDisable() {
+        if (this.viewDate.toDateString() == new Date().toDateString()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    isNextViewButtonDisable() {
+        if (this.viewDate.toDateString() == addDays(new Date(), 14).toDateString()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
 

@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
 export class FilterPage {
     private rooms;
     private selectedSortingOption;
-  
+
     constructor(
         private viewCtrl: ViewController,
         private navParam: NavParams) {
@@ -38,6 +38,32 @@ export class FilterPage {
 
         let data = {
             selectedSortingOption: 'sort_price_highToLow'
+        }
+
+        this.viewCtrl.dismiss(data);
+    }
+
+    sort_size_lowToHigh() {
+
+        this.rooms = this.rooms.sort(function (a, b) {
+            return parseFloat(a.size) - parseFloat(b.size);
+        });
+
+        let data = {
+            selectedSortingOption: 'sort_size_lowToHigh'
+        }
+
+        this.viewCtrl.dismiss(data);
+    }
+
+    sort_size_highToLow() {
+
+        this.rooms = this.rooms.sort(function (a, b) {
+            return parseFloat(b.size) - parseFloat(a.size);
+        });
+
+        let data = {
+            selectedSortingOption: 'sort_size_highToLow'
         }
 
         this.viewCtrl.dismiss(data);

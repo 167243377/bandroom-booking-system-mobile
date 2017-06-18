@@ -1,10 +1,27 @@
 import { ReceiptPage } from '../receipt/receipt';
 import { Room } from '../../model/room';
 import { Component } from '@angular/core';
-import { DateTime, NavController, NavParams, ViewController } from 'ionic-angular';
+import { DateTime, NavController, NavParams, ViewController, AlertController } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
 import { PhoneNoValidator } from '../../pages/bookform/validators/phoneNo';
+
+import {
+    CalendarEvent,
+    CalendarEventAction,
+    CalendarEventTimesChangedEvent
+} from 'angular-calendar';
+
+import {
+    startOfDay,
+    endOfDay,
+    subDays,
+    addDays,
+    endOfMonth,
+    isSameDay,
+    isSameMonth,
+    addHours
+} from 'date-fns'
 
 @Component({
     selector: 'page-bookform',
@@ -15,26 +32,16 @@ export class BookformPage {
     private maxDate;
     room: Room;
     private bookingForm: FormGroup;
-    private eventSource;
-    private viewTitle;
-    private calendar = {
-        // default view = week
-        mode: 'week',
-        currentDate: new Date()
-    };
-    private isShowCalendar = false;
-    private statusTitle = "顯示";
+    private isFormTriedSubmit: boolean = false;
 
-    private markDisabled = (date: Date) => {
-        var current = new Date();
-        current.setHours(0, 0, 0, 0);
-        return date < current;
-    };
+    private events: CalendarEvent[] = [];
+    private isShowCalendar = false;
 
     constructor(
         private navCtrl: NavController,
         private navParams: NavParams,
-        private formBuilder: FormBuilder) {
+        private formBuilder: FormBuilder,
+        private alertCtrl: AlertController) {
         //form builder is a handy library that can easily create validations / is dirty for attributes
 
         //get selected room from the room page
@@ -47,23 +54,30 @@ export class BookformPage {
         // Validators.maxLength(24),
         // Validators.pattern('Regular Expression here')
 
-        this.loadEvents();
-
-        //a library for hiding information in a Collapsed area (bottom of the page)
+        //get non-availdable booking events from room detail page
+        this.events = navParams.get('bookingEvents');
     }
 
     form_submit_BookRoom() {
 
-        this.navCtrl.push(ReceiptPage, {
-            selectedRoom: this.room,
-            bookingData: this.bookingForm.value,
-            isViewMode: false
-        })
+        this.isFormTriedSubmit = true;
+
+        if (this.bookingForm.invalid) {
+            return;
+        }
+
+        if (this.canBook()) {
+            this.navCtrl.push(ReceiptPage, {
+                selectedRoom: this.room,
+                bookingData: this.bookingForm.value,
+                isViewMode: false
+            })
+        }
     }
 
     initializeForm() {
         this.bookingForm = this.formBuilder.group({
-            bookDate: [new Date().toDateString(), Validators.required],
+            bookDate: ['', Validators.required],
             startDateTime: ['', Validators.required],
             endDateTime: ['', Validators.required],
             phoneNo: ['', Validators.compose([Validators.required, PhoneNoValidator.isValid])], // custom validation
@@ -82,93 +96,107 @@ export class BookformPage {
             + '-' + ('0' + (this.maxDate.getMonth() + 1)).slice(-2)
             + '-' + ('0' + this.maxDate.getDate()).slice(-2)
     }
-    
-    loadEvents() {
-        this.eventSource = this.createRandomEvents();
-    }
-
-    onViewTitleChanged(title) {
-        this.viewTitle = title;
-    }
-
-    onEventSelected(event) {
-        console.log('Event selected:' + event.startTime + '-' + event.endTime + ',' + event.title);
-    }
-
-    changeMode(mode) {
-        this.calendar.mode = mode;
-    }
-
-    changeToToday() {
-        this.calendar.currentDate = new Date();
-        this.changeMode('day');
-    }
-
-    onTimeSelected(ev) {
-        console.log('Selected time: ' + ev.selectedTime + ', hasEvents: ' +
-            (ev.events !== undefined && ev.events.length !== 0) + ', disabled: ' + ev.disabled);
-    }
-
-    onCurrentDateChanged(event: Date) {
-        var today = new Date();
-        today.setHours(0, 0, 0, 0);
-        event.setHours(0, 0, 0, 0);
-    }
-
-    createRandomEvents() {
-        var events = [];
-        for (var i = 0; i < 50; i += 1) {
-            var date = new Date();
-            var eventType = Math.floor(Math.random() * 2);
-            var startDay = Math.floor(Math.random() * 90) - 45;
-            var endDay = Math.floor(Math.random() * 2) + startDay;
-            var startTime;
-            var endTime;
-            if (eventType === 0) {
-                startTime = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() + startDay));
-                if (endDay === startDay) {
-                    endDay += 1;
-                }
-                endTime = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() + endDay));
-                events.push({
-                    title: '',
-                    startTime: startTime,
-                    endTime: endTime,
-                    allDay: false
-                });
-            } else {
-
-                var startMinute = Math.floor(Math.random() * 24 * 60);
-                var endMinute = Math.floor(Math.random() * 180) + startMinute;
-
-                startMinute = (date.getMinutes() + startMinute) + ((date.getMinutes() + startMinute) % 15);
-                endMinute = (date.getMinutes() + endMinute) + ((date.getMinutes() + endMinute) % 15);
-
-                startTime = new Date(date.getFullYear(), date.getMonth(), date.getDate() + startDay, 0, startMinute);
-                endTime = new Date(date.getFullYear(), date.getMonth(), date.getDate() + endDay, 0, endMinute);
-                events.push({
-                    title: '',
-                    startTime: startTime,
-                    endTime: endTime,
-                    allDay: false
-                });
-            }
-        }
-        return events;
-    }
-
-    onRangeChanged(ev) {
-        console.log('range changed: startTime: ' + ev.startTime + ', endTime: ' + ev.endTime);
-    }
 
     showCalendar() {
         if (this.isShowCalendar) {
             this.isShowCalendar = false;
-            this.statusTitle = "顯示";
         } else {
             this.isShowCalendar = true;
-            this.statusTitle = "隱藏";
         }
+    }
+
+    canBook(): boolean {
+
+        var bookStartDate = new Date(this.bookingForm.get('bookDate').value);
+        bookStartDate.setHours(
+            this.bookingForm.get('startDateTime').value.split(':')[0],
+            this.bookingForm.get('startDateTime').value.split(':')[1],
+            0,
+            0
+        )
+        var bookEndDate = new Date(this.bookingForm.get('bookDate').value);
+        bookEndDate.setHours(
+            this.bookingForm.get('endDateTime').value.split(':')[0],
+            this.bookingForm.get('endDateTime').value.split(':')[1],
+            0,
+            0
+        )
+
+        if (this.bookingForm.get('endDateTime').value.split(':')[0] == "00") {
+            bookEndDate = addDays(bookEndDate, 1);
+        }
+
+        console.log(bookStartDate);
+        console.log(bookEndDate);
+
+        if (new Date() > bookStartDate) {
+            // cannot book past date or time
+            //E.g Now = 10:00 am, but user inputs 09:00 am
+            let alert = this.alertCtrl.create({
+                message: "開始時間為已過去時間，請選擇其他可預約時間",
+                buttons: [{
+                    text: '知道了'
+                }]
+            })
+
+            alert.present();
+            return false;
+        }
+
+        if (bookEndDate <= bookStartDate) {
+            let alert = this.alertCtrl.create({
+                message: "完結時間不能早於或等於開始時間，請選擇其他可預約時間",
+                buttons: [{
+                    text: '知道了'
+                }]
+            })
+
+            alert.present();
+            return false;
+        }
+
+
+        var diffMs = Math.abs(+bookEndDate - +bookStartDate);
+        var diffMins = Math.floor((diffMs / 1000) / 60);
+
+        console.log(diffMins);
+
+        if (diffMins < 30) {
+            let alert = this.alertCtrl.create({
+                message: "預約時間至少為30分鐘",
+                buttons: [{
+                    text: '知道了'
+                }]
+            })
+
+            alert.present();
+            return false;
+        }
+
+        //check whether selected date and timeslot can be booked, all events are a not availdable timeslot for booking.
+        this.events.map(event => {
+            let eventStartDate = new Date(event.start);
+            let eventEndDate = new Date(event.end);
+
+            if (eventStartDate.toDateString() == bookStartDate.toDateString()) {
+                //we will only compare the same day event
+
+                if (bookStartDate < eventEndDate && bookEndDate > eventStartDate) {
+                    let alert = this.alertCtrl.create({
+                        message: event.title + "，請選擇其他可預約時間",
+                        buttons: [{
+                            text: '知道了'
+                        }]
+                    })
+
+                    alert.present();
+
+                    return false;
+                }
+            }
+        });
+
+        return true;
     }
 
 }

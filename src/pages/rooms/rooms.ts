@@ -82,7 +82,7 @@ export class RoomsPage {
       });
 
     filterModal.onDidDismiss(data => {
-      this.selectedSortingOption = data.selectedFilterValue;
+      this.selectedSortingOption = data.selectedSortingOption;
     });
 
     filterModal.present();

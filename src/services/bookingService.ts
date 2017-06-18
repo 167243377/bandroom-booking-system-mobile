@@ -24,8 +24,8 @@ export class BookingService {
 
         var data = {
             "room": room._id,
-            "startDateTime": this.toLocaleISOString(startDateTime),
-            "endDateTime": this.toLocaleISOString(endDateTime),
+            "startDateTime": startDateTime.toString(),
+            "endDateTime": endDateTime.toString(),
             "phoneNo": bookingData.phoneNo,
             "contactName": bookingData.contactName,
         }

@@ -1,5 +1,5 @@
 <p (click)="showCalendar()" mwlCalendarToday [(viewDate)]="viewDate">
-	<b>預約時間狀況 (兩星期預約資料)</b>
+	<b>預約時間狀況 (提供兩星期預約資料)</b>
 </p>
 
 <ion-icon item-left name="{{ isShowCalendar == false ? 'arrow-forward': 'arrow-down' }}" (click)="showCalendar()" mwlCalendarToday
@@ -26,13 +26,13 @@
 			</ion-buttons>-->
 
 			<ion-segment>
-				<button ion-button color="primary" small icon-only mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate">
+				<button ion-button color="primary" small icon-only mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" [disabled]="isPreviousViewButtonDisable()">
 					<ion-icon name="arrow-back"></ion-icon>
 				</button>
 				<button ion-button color="primary" small mwlCalendarToday [(viewDate)]="viewDate">
 					今天
 				</button>
-				<button ion-button color="primary" small icon-only mwlCalendarNextView [view]="view" [(viewDate)]="viewDate">
+				<button ion-button color="primary" small icon-only mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" [disabled]="isNextViewButtonDisable()">
 					<ion-icon name="arrow-forward"></ion-icon>
 				</button>
 			</ion-segment>

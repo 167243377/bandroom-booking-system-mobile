@@ -23,7 +23,7 @@
 				HK${{ room.price }} / 小時
 			</ion-card-title>
 
-			<p>{{ room.districtDescription + " " + room.roomTypeDescription }}</p>
+			<p>{{ room.districtDescription + (room.size == "" ? " ": " " + room.size + "呎 ") + room.roomTypeDescription }}</p>
 
 		</ion-card-content>
 

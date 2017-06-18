@@ -125,20 +125,18 @@ export class RoomPage {
 
         this.roomId = navParams.get('roomId');
 
-        if (navParams.get('searchDate') !== "") {
-            this.defaultStartDate = new Date(navParams.get('searchDate'));
-        } else {
-            this.defaultStartDate = new Date();
-            this.defaultStartDate.setHours(0, 0, 0, 0);
-        }
+        // if (navParams.get('searchDate') !== "") {
+        //     this.defaultStartDate = new Date(navParams.get('searchDate'));
+        // } else {
+        //     this.defaultStartDate = new Date();
+        //     this.defaultStartDate.setHours(0, 0, 0, 0);
+        // }
     }
 
     ngOnInit() {
         //get room detail
         this.roomService.searchRoom(this.roomId).then(res => {
             this.room = res;
-
-            console.log(this.room);
 
             //Add 4 nonAvailableBookingPeriod
 
@@ -166,7 +164,7 @@ export class RoomPage {
                 let event: CalendarEvent = {
                     start: startDate,
                     end: endDate,
-                    title: '房間暫停預約: ' + this.getTimeString(startDate) + ' - ' + this.getTimeString(endDate),
+                    title: '房間暫停預約: 全日',
                     color: colors.yellow
                 }
 
@@ -183,7 +181,7 @@ export class RoomPage {
                 let event: CalendarEvent = {
                     start: startDate,
                     end: endDate,
-                    title: '中心暫停營業: ' + this.getTimeString(startDate) + ' - ' + this.getTimeString(endDate),
+                    title: '中心暫停營業: 全日',
                     color: colors.yellow
                 }
 
@@ -191,7 +189,7 @@ export class RoomPage {
             })
 
             //#4 center non-avalidable booking day
-            for (var i = 0; i < 14; i++) {
+            for (var i = 0; i < 15; i++) {
                 //14 days information will be provided, so we loop 14 times to check the business day
                 // if any periods are not the business hours, we will create an event to simulate a non avalidable booking period
 
@@ -202,8 +200,6 @@ export class RoomPage {
                 currentDateEndTime.setHours(24, 0, 0, 0);
 
                 let weekDayBusinessHour;
-
-                console.log(currentDateStarTime.getDay());
 
                 switch (currentDateStarTime.getDay()) {
                     case 1:
@@ -229,8 +225,6 @@ export class RoomPage {
                         break;
                 }
 
-                console.log(weekDayBusinessHour);
-
                 if (weekDayBusinessHour.isOpen) {
                     // add two events, one is before businessHour, another is after  businessHour
                     let businessHourStart = weekDayBusinessHour.startTime;
@@ -255,9 +249,6 @@ export class RoomPage {
                         color: colors.yellow
                     }
 
-                    console.log('beforeBusinessHourEvent');
-                    console.log(beforeBusinessHourEvent);
-
                     this.events.push(beforeBusinessHourEvent);
 
                     if (businessEndHour != 0) {
@@ -269,9 +260,6 @@ export class RoomPage {
                             color: colors.yellow
                         }
 
-                        console.log('afterBusinessHourEvent');
-                        console.log(afterBusinessHourEvent);
-
                         this.events.push(afterBusinessHourEvent);
                     }
 
@@ -281,7 +269,7 @@ export class RoomPage {
                     let businessHourEvent = {
                         start: currentDateStarTime,
                         end: currentDateEndTime,
-                        title: '非營業時間: ' + this.getTimeString(currentDateStarTime) + ' - ' + this.getTimeString(currentDateEndTime),
+                        title: '非營業時間: 全日',
                         color: colors.yellow
                     }
 
@@ -357,7 +345,7 @@ export class RoomPage {
     }
 
     bookNow() {
-        this.navCtrl.push(BookformPage, { room: this.room });
+        this.navCtrl.push(BookformPage, { 'room': this.room, 'bookingEvents': this.events });
     }
     showCalendar() {
         this.isShowCalendar = !this.isShowCalendar;
