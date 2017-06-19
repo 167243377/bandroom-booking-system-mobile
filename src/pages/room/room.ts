@@ -141,52 +141,59 @@ export class RoomPage {
             //Add 4 nonAvailableBookingPeriod
 
             //#1 booked periods
-            this.room.bookedPeriods.map(bookedPeriod => {
+            if (this.room.bookedPeriods !== undefined) {
+                this.room.bookedPeriods.forEach(bookedPeriod => {
 
-                let event: CalendarEvent = {
-                    start: new Date(bookedPeriod.startDateTime),
-                    end: new Date(bookedPeriod.endDateTime),
-                    title: '已有預約: ' + this.getTimeString(new Date(bookedPeriod.startDateTime)) + ' - ' + this.getTimeString(new Date(bookedPeriod.endDateTime)),
-                    color: colors.red
-                }
+                    let event: CalendarEvent = {
+                        start: new Date(bookedPeriod.startDateTime),
+                        end: new Date(bookedPeriod.endDateTime),
+                        title: '已有預約: ' + this.getTimeString(new Date(bookedPeriod.startDateTime)) + ' - ' + this.getTimeString(new Date(bookedPeriod.endDateTime)),
+                        color: colors.red
+                    }
 
-                this.events.push(event);
-            })
+                    this.events.push(event);
+                })
+            }
 
             //#2 room non-avalidable booking day
-            this.room.roomNonAvailablePeriod.map(nonAvailableBookingPeriod => {
+            if (this.room.roomNonAvailablePeriod !== undefined) {
+                this.room.roomNonAvailablePeriod.forEach(nonAvailableBookingPeriod => {
 
-                let startDate = new Date(nonAvailableBookingPeriod.startDate);
-                startDate.setHours(0, 0, 0, 0);
-                let endDate = new Date(nonAvailableBookingPeriod.endDate);
-                endDate.setHours(24, 0, 0, 0);
+                    let startDate = new Date(nonAvailableBookingPeriod.startDate);
+                    startDate.setHours(0, 0, 0, 0);
+                    let endDate = new Date(nonAvailableBookingPeriod.endDate);
+                    endDate.setHours(24, 0, 0, 0);
 
-                let event: CalendarEvent = {
-                    start: startDate,
-                    end: endDate,
-                    title: '房間暫停預約: 全日',
-                    color: colors.yellow
-                }
+                    let event: CalendarEvent = {
+                        start: startDate,
+                        end: endDate,
+                        title: '房間暫停預約: 全日',
+                        color: colors.yellow
+                    }
 
-                this.events.push(event);
-            })
+                    this.events.push(event);
+                })
+            }
 
             //#3 center non-avalidable booking day
-            this.room.center.nonAvailablePeriod.map(nonAvailableBookingPeriod => {
-                let startDate = new Date(nonAvailableBookingPeriod.startDate);
-                startDate.setHours(0, 0, 0, 0);
-                let endDate = new Date(nonAvailableBookingPeriod.endDate);
-                endDate.setHours(24, 0, 0, 0);
 
-                let event: CalendarEvent = {
-                    start: startDate,
-                    end: endDate,
-                    title: '中心暫停營業: 全日',
-                    color: colors.yellow
-                }
+            if (this.room.center.nonAvailablePeriod !== undefined) {
+                this.room.center.nonAvailablePeriod.forEach(nonAvailableBookingPeriod => {
+                    let startDate = new Date(nonAvailableBookingPeriod.startDate);
+                    startDate.setHours(0, 0, 0, 0);
+                    let endDate = new Date(nonAvailableBookingPeriod.endDate);
+                    endDate.setHours(24, 0, 0, 0);
 
-                this.events.push(event);
-            })
+                    let event: CalendarEvent = {
+                        start: startDate,
+                        end: endDate,
+                        title: '中心暫停營業: 全日',
+                        color: colors.yellow
+                    }
+
+                    this.events.push(event);
+                })
+            }
 
             //#4 center non-avalidable booking day
             for (var i = 0; i < 15; i++) {

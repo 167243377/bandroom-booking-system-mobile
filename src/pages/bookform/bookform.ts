@@ -107,6 +107,8 @@ export class BookformPage {
 
     canBook(): boolean {
 
+        let canBook = true;
+
         var bookStartDate = new Date(this.bookingForm.get('bookDate').value);
         bookStartDate.setHours(
             this.bookingForm.get('startDateTime').value.split(':')[0],
@@ -126,9 +128,6 @@ export class BookformPage {
             bookEndDate = addDays(bookEndDate, 1);
         }
 
-        console.log(bookStartDate);
-        console.log(bookEndDate);
-
         if (new Date() > bookStartDate) {
             // cannot book past date or time
             //E.g Now = 10:00 am, but user inputs 09:00 am
@@ -140,7 +139,8 @@ export class BookformPage {
             })
 
             alert.present();
-            return false;
+            canBook = false;
+            return canBook;
         }
 
         if (bookEndDate <= bookStartDate) {
@@ -152,7 +152,8 @@ export class BookformPage {
             })
 
             alert.present();
-            return false;
+            canBook = false;
+            return canBook;
         }
 
 
@@ -170,11 +171,13 @@ export class BookformPage {
             })
 
             alert.present();
-            return false;
+            canBook = false;
+            return canBook;
         }
 
         //check whether selected date and timeslot can be booked, all events are a not availdable timeslot for booking.
-        this.events.map(event => {
+
+        this.events.forEach(event => {
             let eventStartDate = new Date(event.start);
             let eventEndDate = new Date(event.end);
 
@@ -190,13 +193,13 @@ export class BookformPage {
                     })
 
                     alert.present();
-
+                    canBook = false;
                     return false;
                 }
             }
         });
 
-        return true;
+        return canBook;
     }
 
 }

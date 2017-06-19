@@ -13,7 +13,7 @@
 </ion-header>
 
 <ion-content padding>
-	<ion-slides no-padding class="normal-slides" effect="slide" loop="true" pager="true" paginationType="bullets" zoom="false">
+	<ion-slides no-padding class="normal-slides" effect="slide" loop="false" pager="true" paginationType="bullets" zoom="false">
 
 		<ion-slide *ngFor="let img of room.images">
 			<img src="{{ host + '/cfs/files/Attachments/' + img }}" />
