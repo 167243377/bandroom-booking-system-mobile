@@ -1,13 +1,14 @@
 <ion-header>
-  <ion-navbar color="primary">
-    <button ion-button menuToggle>
+	<ion-navbar color="primary">
+		<button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Settings</ion-title>
-  </ion-navbar>
+		<ion-title>設定</ion-title>
+	</ion-navbar>
 </ion-header>
 <ion-content padding>
-  <p>
-    This is settings page
-  </p>
+	<ion-item>
+		<ion-input [(ngModel)]="serverHost" placeholder="Server Host: http://localhost:3000/"></ion-input>
+	</ion-item>
+	<button ion-button color="primary" large (click)="saveChange()">Save</button>
 </ion-content>

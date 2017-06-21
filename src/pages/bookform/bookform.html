@@ -23,7 +23,7 @@
 
 		<ion-item>
 			<ion-label col-5>開始時間</ion-label>
-			<ion-datetime formControlName="startDateTime" displayFormat="hh:mm" minuteValues="0,15,30,45" min="{{minDate}}" max="{{maxDate}}" text-left></ion-datetime>
+			<ion-datetime formControlName="startDateTime" displayFormat="HH:mm" minuteValues="0,15,30,45" min="{{minDate}}" max="{{maxDate}}" text-left></ion-datetime>
 		</ion-item>
 		<ion-label color="primary" [hidden]="bookingForm.controls.startDateTime.valid || (bookingForm.controls.startDateTime.pristine && !isFormTriedSubmit)">
 			必需填寫開始時間
@@ -31,7 +31,7 @@
 
 		<ion-item>
 			<ion-label col-5>完結時間</ion-label>
-			<ion-datetime formControlName="endDateTime" displayFormat="hh:mm" minuteValues="0,15,30,45" min="{{minDate}}" max="{{maxDate}}" text-left></ion-datetime>
+			<ion-datetime formControlName="endDateTime" displayFormat="HH:mm" minuteValues="0,15,30,45" min="{{minDate}}" max="{{maxDate}}" text-left></ion-datetime>
 		</ion-item>
 		<ion-label color="primary" [hidden]="bookingForm.controls.endDateTime.valid || (bookingForm.controls.endDateTime.pristine && !isFormTriedSubmit)">
 			必需填寫完結時間

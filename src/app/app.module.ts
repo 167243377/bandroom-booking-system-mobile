@@ -45,7 +45,7 @@ const cloudSettings: CloudSettings = {
 
 @NgModule({
     imports: [
-        IonicModule.forRoot(MyApp),
+        IonicModule.forRoot(MyApp, { tabsHideOnSubPages: true }),
         // { AgmCoreModule } from "angular2-google-maps/core"; //Google Map
         AgmCoreModule.forRoot({
             apiKey: 'AIzaSyAbvD7D-R25lPAera_P897iml38twjEfJc'

@@ -1,4 +1,5 @@
 import { AppSettings } from '../appSettings';
+
 import { District } from '../model/district';
 import { RoomType } from '../model/roomType';
 import { Injectable } from "@angular/core";
@@ -8,17 +9,24 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class RoomService {
-
+    private host: string;
     private searchText: string;
     private roomID: string;
 
     constructor(
-        private http: Http) {
+        private http: Http,
+        private appSettings: AppSettings) {
+
+
     }
 
     getRoomTypes(): Promise<RoomType[]> {
+        this.appSettings.getServerHost().then(val => {
+            this.host = val;
+        })
+        
         return new Promise((resolve, reject) => {
-            this.http.get(AppSettings.apiHost + 'api/roomTypes')
+            this.http.get(this.host + 'api/roomTypes')
                 .map(res => res.json())
                 .subscribe((response) => {
                     resolve(response.data);
@@ -29,8 +37,11 @@ export class RoomService {
     }
 
     getDistricts(): Promise<District[]> {
+        this.appSettings.getServerHost().then(val => {
+            this.host = val;
+        })
         return new Promise((resolve, reject) => {
-            this.http.get(AppSettings.apiHost + 'api/districts')
+            this.http.get(this.host + 'api/districts')
                 .map(res => res.json())
                 .subscribe((response) => {
                     resolve(response.data);
@@ -41,11 +52,11 @@ export class RoomService {
     }
 
     searchRoom(roomId): Promise<any> {
-
-        console.log(AppSettings.apiHost + 'api/rooms/' + roomId);
-
+        this.appSettings.getServerHost().then(val => {
+            this.host = val;
+        })
         return new Promise((resolve, reject) => {
-            this.http.get(AppSettings.apiHost + 'api/rooms/' + roomId)
+            this.http.get(this.host + 'api/rooms/' + roomId)
                 .map(res => res.json())
                 .subscribe((response) => {
 
@@ -59,9 +70,11 @@ export class RoomService {
     }
 
     searchRooms(searchCriterias): Promise<any[]> {
-
+        this.appSettings.getServerHost().then(val => {
+            this.host = val;
+        })
         return new Promise((resolve, reject) => {
-            this.http.post(AppSettings.apiHost + 'api/rooms', searchCriterias)
+            this.http.post(this.host + 'api/rooms', searchCriterias)
                 .map(res => res.json())
                 .subscribe((response) => {
 
@@ -75,9 +88,12 @@ export class RoomService {
     }
 
     getFavoriteRooms(favoriteRoomIds): Promise<any[]> {
+        this.appSettings.getServerHost().then(val => {
+            this.host = val;
+        })
 
         return new Promise((resolve, reject) => {
-            this.http.post(AppSettings.apiHost + 'api/favoriteRooms', favoriteRoomIds)
+            this.http.post(this.host + 'api/favoriteRooms', favoriteRoomIds)
                 .map(res => res.json())
                 .subscribe((response) => {
 

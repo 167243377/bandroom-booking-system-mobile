@@ -1,4 +1,5 @@
 import { AppSettings } from '../appSettings';
+
 import { Room } from '../model/room';
 import { Injectable } from "@angular/core";
 import { Http, Headers } from '@angular/http';
@@ -7,13 +8,13 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class BookingService {
 
-    constructor(private http: Http) {
+    private host: string;
 
+    constructor(private http: Http,
+        private appSettings: AppSettings) {
     }
 
     createBooking(room: Room, bookingData) {
-        console.log(room);
-
         var startDateTime = new Date(bookingData.bookDate);
         startDateTime.setHours(bookingData.startDateTime.split(':')[0]);
         startDateTime.setMinutes(bookingData.startDateTime.split(':')[1]);
@@ -33,7 +34,10 @@ export class BookingService {
         console.log(data);
 
         return new Promise((resolve, reject) => {
-            this.http.post(AppSettings.apiHost + 'api/reservations', data)
+            this.appSettings.getServerHost().then(val => {
+                this.host = val;
+            })
+            this.http.post(this.host + 'api/reservations', data)
                 .map(res => res.json())
                 .subscribe((response) => {
                     resolve(response.data);
@@ -44,8 +48,11 @@ export class BookingService {
     }
 
     getBooking(receiptNo: string) {
+        this.appSettings.getServerHost().then(val => {
+            this.host = val;
+        })
         return new Promise((resolve, reject) => {
-            this.http.get(AppSettings.apiHost + 'api/reservations/' + receiptNo)
+            this.http.get(this.host + 'api/reservations/' + receiptNo)
                 .map(res => res.json())
                 .subscribe((response) => {
                     resolve(response.data);

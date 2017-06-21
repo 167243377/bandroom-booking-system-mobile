@@ -47,7 +47,7 @@ const colors: any = {
     templateUrl: 'room.html'
 })
 export class RoomPage {
-    private host = AppSettings.apiHost;
+    private host;
     private roomId;
     private events: CalendarEvent[] = [];
     public defaultStartDate: Date;
@@ -121,7 +121,8 @@ export class RoomPage {
         private toastCtrl: ToastController,
         private modalCtrl: ModalController,
         private roomService: RoomService,
-        private storage: Storage) {
+        private storage: Storage,
+        private appSettings: AppSettings) {
 
         this.roomId = navParams.get('roomId');
 
@@ -135,6 +136,10 @@ export class RoomPage {
 
     ngOnInit() {
         //get room detail
+        this.appSettings.getServerHost().then(val => {
+            this.host = val;
+        })
+
         this.roomService.searchRoom(this.roomId).then(res => {
             this.room = res;
 

@@ -58,8 +58,13 @@ export class SearchPage {
 
     ngOnInit() { // componment Start method
         // initializing code tables
+    }
+
+    ionViewDidEnter() {
         this.roomService.getRoomTypes().then(res => {
             let roomTypes: RoomType[] = res;
+
+            this.roomTypes = [];
 
             for (var i = 0; i < roomTypes.length; i++) {
                 let currentRoomType = roomTypes[i];
@@ -73,6 +78,8 @@ export class SearchPage {
         this.roomService.getDistricts().then(res => {
             let districts: District[] = res;
 
+            this.districts = [];
+
             for (var i = 0; i < districts.length; i++) {
                 let currentDistrict = districts[i];
                 this.districts.push(new District(currentDistrict.code, currentDistrict.description));
@@ -81,7 +88,6 @@ export class SearchPage {
         }).catch(error => {
             this.showError(error);
         })
-
     }
 
     onSearchRooms() {

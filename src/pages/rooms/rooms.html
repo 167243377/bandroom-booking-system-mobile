@@ -20,10 +20,10 @@
 
 		<ion-card-content>
 			<ion-card-title>
-				HK${{ room.price }} / 小時
+				<ion-label>HK${{ room.price }} / 小時</ion-label>
 			</ion-card-title>
 
-			<p>{{ room.districtDescription + (room.size == "" ? " ": " " + room.size + "呎 ") + room.roomTypeDescription }}</p>
+			<ion-label>{{ room.districtDescription + (room.size == "" ? " ": " " + room.size + "呎 ") + room.roomTypeDescription }}</ion-label>
 
 		</ion-card-content>
 

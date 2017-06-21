@@ -1,6 +1,6 @@
+import { AppSettings } from '../../appSettings';
 import { RoomService } from '../../services/roomService';
 import { FilterPage } from '../filter/filter';
-import { AppSettings } from '../../appSettings';
 import { Component } from '@angular/core';
 import {
   AlertController,
@@ -20,7 +20,7 @@ import { Room } from "../../model/room";
   templateUrl: 'rooms.html'
 })
 export class RoomsPage {
-  private host = AppSettings.apiHost;
+  private host;
   private rooms;
   private searchCriterias;
   private selectedSortingOption;
@@ -31,11 +31,11 @@ export class RoomsPage {
     private toastCtrl: ToastController,
     private roomService: RoomService,
     private loadingCtrl: LoadingController,
-    private alertCtrl: AlertController) {
+    private alertCtrl: AlertController,
+    private appSettings: AppSettings) {
 
     this.rooms = navParams.get('rooms');
     this.searchCriterias = navParams.get('searchCriterias');
-    console.log(this.rooms);
   }
 
   onGoToRoomDetailPage(roomId) {
@@ -55,6 +55,9 @@ export class RoomsPage {
       this.showError(error);
 
     }).then(() => {
+      this.appSettings.getServerHost().then(val => {
+        this.host = val;
+      })
       refresher.complete();
     })
 

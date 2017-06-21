@@ -7,9 +7,8 @@
 			搜尋
 		</ion-title>
 		<ion-buttons end>
-			<button ion-button icon-only (click)="initializeSearchCriteria()">
-          		<ion-icon name="trash"></ion-icon> 
-         	 	<ion-label>重置搜尋條件</ion-label>
+			<button ion-button icon-only (click)="onSearchRooms()">
+          		<ion-icon name="search"></ion-icon> 
       		</button>
 		</ion-buttons>
 	</ion-navbar>
@@ -98,8 +97,3 @@
 	</ion-list>
 
 </ion-content>
-
-<ion-footer class="ion-footer">
-	<button ion-button full large (click)="onSearchRooms()" color="primary">搜尋
-  </button>
-</ion-footer>

@@ -1,4 +1,5 @@
 import { AppSettings } from '../../appSettings';
+
 import { Component } from '@angular/core';
 import { NavController, NavParams, MenuController, ModalController, AlertController } from 'ionic-angular';
 import { RoomService } from "../../services/roomService";
@@ -12,7 +13,7 @@ import { Storage } from '@ionic/storage';
     templateUrl: 'favorite.html'
 })
 export class FavoritePage {
-    private host = AppSettings.apiHost;
+    private host;
     private favoriteRooms = [];
 
     constructor(private navCtrl: NavController,
@@ -20,10 +21,14 @@ export class FavoritePage {
         private modalCtrl: ModalController,
         private menuCtrl: MenuController,
         private storage: Storage,
-        private alertCtrl: AlertController) {
+        private alertCtrl: AlertController,
+        private appSettings: AppSettings) {
     }
 
     ionViewWillEnter() {
+        this.appSettings.getServerHost().then(val => {
+            this.host = val;
+        })
         this.getFavoriteRooms();
     }
 

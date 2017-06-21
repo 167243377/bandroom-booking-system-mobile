@@ -1,3 +1,5 @@
+import { SearchBookingRecordsPage } from '../search-booking-records/search-booking-records';
+import { SettingsPage } from '../settings/settings';
 import { Component } from '@angular/core';
 import { SearchPage } from "../search/search";
 import { FavoritePage } from "../favorite/favorite";
@@ -16,5 +18,6 @@ export class TabsPage {
 
   searchPage = SearchPage;
   favoritePage = FavoritePage;
-
+  searchBookingRecordsPage = SearchBookingRecordsPage;
+  settingsPage = SettingsPage;
 }
