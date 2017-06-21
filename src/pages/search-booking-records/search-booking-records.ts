@@ -18,7 +18,7 @@ export class SearchBookingRecordsPage {
 
     }
 
-    ngOnInit() {
+    ionViewWillEnter() {
         this.getReceiptRecords();
     }
 
@@ -35,6 +35,11 @@ export class SearchBookingRecordsPage {
             title: '確認執行',
             message: '確定刪除預約紀錄？(紀錄將不能復完）',
             buttons: [
+                {
+                    text: '取消',
+                    role: 'cancel'
+
+                },
                 {
                     text: '確定',
                     handler: () => {
@@ -65,11 +70,6 @@ export class SearchBookingRecordsPage {
                         });
 
                     }
-                },
-                {
-                    text: '取消',
-                    role: 'cancel'
-
                 }
             ]
 

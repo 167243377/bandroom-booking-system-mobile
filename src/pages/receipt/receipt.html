@@ -35,6 +35,9 @@
 			</ion-col>
 			<ion-col>
 				<ion-label>{{ bookedRoom.description }}</ion-label>
+				<button *ngIf="isViewMode" ion-button icon-only (click)="viewRoom()">
+					<ion-icon name="eye"></ion-icon>
+				</button>
 			</ion-col>
 		</ion-row>
 

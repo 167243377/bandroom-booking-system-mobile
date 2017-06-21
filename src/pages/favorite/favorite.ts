@@ -28,8 +28,9 @@ export class FavoritePage {
     ionViewWillEnter() {
         this.appSettings.getServerHost().then(val => {
             this.host = val;
+        }).then(() => {
+            this.getFavoriteRooms();
         })
-        this.getFavoriteRooms();
     }
 
     goToRoomDetailPage(selectedRoomId) {
@@ -37,6 +38,19 @@ export class FavoritePage {
     }
 
     removeFromFavorites(selectedRoomId) {
+       let alert = this.alertCtrl.create({
+            title: '確認執行',
+            message: '確定刪除預約紀錄？(紀錄將不能復完）',
+            buttons: [
+                {
+                    text: '取消',
+                    role: 'cancel'
+
+                },
+                {
+                    text: '確定',
+                    handler: () => {
+
         this.storage.get('favorites').then(val => {
             var favoriteList: string[];
 
@@ -52,6 +66,13 @@ export class FavoritePage {
         }).then(() => {
             this.refreshSearchData();
         })
+
+                    }
+                }
+            ]
+
+        });
+        alert.present();
     }
 
     refreshSearchData() {

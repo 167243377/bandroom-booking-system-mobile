@@ -24,20 +24,16 @@
 
 			<ion-item (click)="goToRoomDetailPage(favoriteRoom._id)">
 
-				<h2>{{ favoriteRoom.centerName }}</h2>
+				<ion-label>{{ favoriteRoom.centerName }}</ion-label>
 
 				<img class="card-img" src="{{ host + '/cfs/files/Attachments/' +  favoriteRoom.images[0] }}" />-->
 
-				<p>{{ favoriteRoom.description }}</p>
+				<ion-label>{{ favoriteRoom.description }}</ion-label>
 
 			</ion-item>
 
-			<ion-item-options>
-				<button ion-button color="danger" (click)="removeFromFavorites(favoriteRoom._id)">
-         		 	<ion-icon name="trash"></ion-icon>
-         			 Delete
-        		</button>
-
+			<ion-item-options side="right">
+				<button ion-button (click)="removeFromFavorites(favoriteRoom._id)">刪除</button>
 			</ion-item-options>
 
 		</ion-item-sliding>

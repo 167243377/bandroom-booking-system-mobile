@@ -1,3 +1,4 @@
+import { RoomPage } from '../room/room';
 import { TabsPage } from '../tabs/tabs';
 import { Room } from '../../model/room';
 import { Component } from '@angular/core';
@@ -160,5 +161,10 @@ export class ReceiptPage {
     if (this.navCtrl.canGoBack) {
       this.navCtrl.pop();
     }
+  }
+
+  viewRoom() {
+    console.log(this.bookedRoom);
+    this.navCtrl.push(RoomPage, { 'roomId': this.bookedRoom._id });
   }
 }

@@ -31,34 +31,37 @@ export class BookingService {
             "contactName": bookingData.contactName,
         }
 
-        console.log(data);
-
         return new Promise((resolve, reject) => {
-            this.appSettings.getServerHost().then(val => {
-                this.host = val;
+            this.appSettings.getServerHost().then(serverHost => {
+                return serverHost;
+            }).then((serverHost) => {
+                this.http.post(serverHost + 'api/reservations', data)
+                    .map(res => res.json())
+                    .subscribe((response) => {
+                        resolve(response.data);
+                    }, (error) => {
+                        reject(error);
+                    });
             })
-            this.http.post(this.host + 'api/reservations', data)
-                .map(res => res.json())
-                .subscribe((response) => {
-                    resolve(response.data);
-                }, (error) => {
-                    reject(error);
-                });
         });
     }
 
-    getBooking(receiptNo: string) {
-        this.appSettings.getServerHost().then(val => {
-            this.host = val;
-        })
+    getBooking(receiptNo: String) {
         return new Promise((resolve, reject) => {
-            this.http.get(this.host + 'api/reservations/' + receiptNo)
-                .map(res => res.json())
-                .subscribe((response) => {
-                    resolve(response.data);
-                }, (error) => {
-                    reject(error);
-                });
+
+            this.appSettings.getServerHost().then(serverHost => {
+                return serverHost;
+            }).then((serverHost) => {
+
+                this.http.get(serverHost + 'api/reservations/' + receiptNo)
+                    .map(res => res.json())
+                    .subscribe((response) => {
+                        console.log(response.data);
+                        resolve(response.data);
+                    }, (error) => {
+                        reject(error);
+                    });
+            })
         });
     }
 

@@ -36,30 +36,35 @@ export class RoomsPage {
 
     this.rooms = navParams.get('rooms');
     this.searchCriterias = navParams.get('searchCriterias');
+    this.appSettings.getServerHost().then(val => {
+      this.host = val;
+    })
   }
 
   onGoToRoomDetailPage(roomId) {
-    this.navCtrl.push(RoomPage, { 'roomId': roomId, 'searchDate': this.searchCriterias.searchDate });
+    this.navCtrl.push(RoomPage, { 'roomId': roomId });
   }
 
   onSearchRooms(refresher) {
-
-    this.roomService.searchRooms(this.searchCriterias).then(res => {
-
-      if (this.isAnyResultReturned(res)) {
-        this.rooms = res;
-      }
-
-    }).catch(error => {
-
-      this.showError(error);
-
+    this.appSettings.getServerHost().then(val => {
+      this.host = val;
+      //refresh the host for showing pictures
     }).then(() => {
-      this.appSettings.getServerHost().then(val => {
-        this.host = val;
+      this.roomService.searchRooms(this.searchCriterias).then(res => {
+
+        if (this.isAnyResultReturned(res)) {
+          this.rooms = res;
+        }
+
+      }).catch(error => {
+
+        this.showError(error);
+
+      }).then(() => {
+        refresher.complete();
       })
-      refresher.complete();
     })
+
 
   }
 

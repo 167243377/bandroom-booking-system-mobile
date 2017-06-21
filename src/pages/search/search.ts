@@ -1,3 +1,4 @@
+import { AppSettings } from '../../appSettings';
 import { AlertController } from 'ionic-angular';
 import { District } from '../../model/district';
 import { RoomType } from '../../model/roomType';
@@ -39,7 +40,8 @@ export class SearchPage {
         private toastCtrl: ToastController,
         private roomService: RoomService,
         private loadingCtrl: LoadingController,
-        private alertCtrl: AlertController) {
+        private alertCtrl: AlertController,
+        private appSettings: AppSettings) {
 
         this.initializeSearchCriteria();
 
@@ -61,6 +63,7 @@ export class SearchPage {
     }
 
     ionViewDidEnter() {
+
         this.roomService.getRoomTypes().then(res => {
             let roomTypes: RoomType[] = res;
 
@@ -72,7 +75,7 @@ export class SearchPage {
             }
 
         }).catch(error => {
-            this.showError(error);
+            console.log(error);
         })
 
         this.roomService.getDistricts().then(res => {
@@ -86,7 +89,7 @@ export class SearchPage {
             }
 
         }).catch(error => {
-            this.showError(error);
+            console.log(error);
         })
     }
 
@@ -120,22 +123,12 @@ export class SearchPage {
 
         }).catch(error => {
 
-            this.showError(error);
+            console.log(error);
 
         }).then(() => {
             loading.dismiss();
         })
 
-    }
-
-    showError(errorMsg: string) {
-        let toast = this.toastCtrl.create({
-            message: errorMsg,
-            duration: 3000,
-            position: 'bottom'
-        });
-
-        toast.present();
     }
 
     isAnyResultReturned(apiResponse): boolean {
