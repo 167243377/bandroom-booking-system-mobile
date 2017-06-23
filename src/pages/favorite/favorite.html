@@ -24,12 +24,16 @@
 
 			<ion-item (click)="goToRoomDetailPage(favoriteRoom._id)">
 
-				<ion-label>{{ favoriteRoom.centerName }}</ion-label>
+				{{ favoriteRoom.centerName }}
 
-				<img class="card-img" src="{{ host + '/cfs/files/Attachments/' +  favoriteRoom.images[0] }}" />-->
+				<br>
 
-				<ion-label>{{ favoriteRoom.description }}</ion-label>
+				<img class="card-img" src="{{ host + '/cfs/files/Attachments/' +  favoriteRoom.images[0] }}" />
 
+				<br>
+
+				{{ favoriteRoom.description }}
+				
 			</ion-item>
 
 			<ion-item-options side="right">
