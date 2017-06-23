@@ -178,25 +178,33 @@ export class BookformPage {
         //check whether selected date and timeslot can be booked, all events are a not availdable timeslot for booking.
 
         this.events.forEach(event => {
+
+            console.log(event);
+
             let eventStartDate = new Date(event.start);
             let eventEndDate = new Date(event.end);
 
-            if (eventStartDate.toDateString() == bookStartDate.toDateString()) {
-                //we will only compare the same day event
+            // if (eventStartDate.toDateString() == bookStartDate.toDateString()) {
+            //we will only compare the same day event
 
-                if (bookStartDate < eventEndDate && bookEndDate > eventStartDate) {
-                    let alert = this.alertCtrl.create({
-                        message: event.title + "，請選擇其他可預約時間",
-                        buttons: [{
-                            text: '知道了'
-                        }]
-                    })
 
-                    alert.present();
-                    canBook = false;
-                    return false;
-                }
+
+            if (bookStartDate < eventEndDate && bookEndDate > eventStartDate) {
+
+
+
+                let alert = this.alertCtrl.create({
+                    message: event.title + "，請選擇其他可預約時間",
+                    buttons: [{
+                        text: '知道了'
+                    }]
+                })
+
+                alert.present();
+                canBook = false;
+                return false;
             }
+            // }
         });
 
         return canBook;

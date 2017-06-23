@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.ionicframework.bandroombookingsystemmobile146360" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>bandroom-booking-system-mobile</name>
-    <description>An awesome Ionic/Cordova app.</description>
+    <name>Book Room Booking</name>
+    <description>A very first musical room booking app.</description>
     <author email="167243377@stu.vtc.edu.hk" href="http://ionicframework.com/">Kong Cheung</author>
     <content src="index.html" />
     <access origin="*" />

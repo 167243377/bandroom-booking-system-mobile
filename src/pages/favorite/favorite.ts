@@ -38,7 +38,7 @@ export class FavoritePage {
     }
 
     removeFromFavorites(selectedRoomId) {
-       let alert = this.alertCtrl.create({
+        let alert = this.alertCtrl.create({
             title: '確認執行',
             message: '確定刪除預約紀錄？(紀錄將不能復完）',
             buttons: [
@@ -51,21 +51,21 @@ export class FavoritePage {
                     text: '確定',
                     handler: () => {
 
-        this.storage.get('favorites').then(val => {
-            var favoriteList: string[];
+                        this.storage.get('favorites').then(val => {
+                            var favoriteList: string[];
 
-            if (val == undefined || val == null) {
-                favoriteList = [];
-            } else {
-                favoriteList = <string[]>val;
-            }
+                            if (val == undefined || val == null) {
+                                favoriteList = [];
+                            } else {
+                                favoriteList = <string[]>val;
+                            }
 
-            favoriteList.splice(favoriteList.indexOf(selectedRoomId), 1);
-            this.storage.set('favorites', favoriteList);
+                            favoriteList.splice(favoriteList.indexOf(selectedRoomId), 1);
+                            this.storage.set('favorites', favoriteList);
 
-        }).then(() => {
-            this.refreshSearchData();
-        })
+                        }).then(() => {
+                            this.refreshSearchData();
+                        })
 
                     }
                 }
