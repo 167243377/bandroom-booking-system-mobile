@@ -67,8 +67,23 @@ export class BookformPage {
         }
 
         if (this.canBook()) {
+            var startDateTime: any = new Date(this.bookingForm.get('bookDate').value);
+            startDateTime.setHours(this.bookingForm.get('startDateTime').value.split(':')[0]);
+            startDateTime.setMinutes(this.bookingForm.get('startDateTime').value.split(':')[1]);
+
+            var endDateTime: any = new Date(this.bookingForm.get('bookDate').value);
+            endDateTime.setHours(this.bookingForm.get('endDateTime').value.split(':')[0]);
+            endDateTime.setMinutes(this.bookingForm.get('endDateTime').value.split(':')[1]);
+
+            var diffDate = endDateTime - startDateTime;
+            var diffHours = Math.floor((diffDate % 86400000) / 3600000);
+            var diffMintues = (diffHours * 60) + Math.round(((diffDate % 86400000) % 3600000) / 60000); // minutes
+
+            var totalAmount = this.room.price * (diffMintues / 60);
+
             this.navCtrl.push(ReceiptPage, {
                 selectedRoom: this.room,
+                totalAmount: totalAmount,
                 bookingData: this.bookingForm.value,
                 isViewMode: false
             })
@@ -82,7 +97,7 @@ export class BookformPage {
             endDateTime: ['', Validators.required],
             phoneNo: ['', Validators.compose([Validators.required, PhoneNoValidator.isValid])], // custom validation
             contactName: ['', Validators.maxLength(30)],
-            people: ['', Validators.maxLength(1)]
+            people: ['', Validators.maxLength(1)],
         })
 
         this.minDate = new Date();

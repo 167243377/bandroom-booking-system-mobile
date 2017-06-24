@@ -16,6 +16,7 @@ import { Storage } from '@ionic/storage';
 export class ReceiptPage {
   private bookingData;
   private bookedRoom: Room;
+  private totalAmount;
 
   private isViewMode = false;
   private receiptNo = "";
@@ -35,6 +36,7 @@ export class ReceiptPage {
   ) {
     this.bookingData = navParams.get('bookingData');
     this.bookedRoom = navParams.get('selectedRoom');
+    this.totalAmount = navParams.get('totalAmount');
     this.isViewMode = navParams.get('isViewMode');
 
     if (this.isViewMode) {
@@ -67,7 +69,7 @@ export class ReceiptPage {
   confirmBooking() {
     this.loadingCtr.present();
 
-    this.bookingService.createBooking(this.bookedRoom, this.bookingData).then((returnedReservationId => {
+    this.bookingService.createBooking(this.bookedRoom, this.totalAmount, this.bookingData).then((returnedReservationId => {
 
       this.loadingCtr.dismiss();
 
@@ -94,6 +96,7 @@ export class ReceiptPage {
                 receiptNo: returnedReservationId.toString(),
                 data: {
                   bookDate: this.bookingData.bookDate,
+                  totalAmount: this.totalAmount,
                   startDateTime: this.bookingData.startDateTime,
                   endDateTime: this.bookingData.endDateTime,
                 }
@@ -136,6 +139,7 @@ export class ReceiptPage {
     this.bookingService.getBooking(this.receiptNo).then(response => {
       let res = <any>response;
       this.bookedRoom = res.room;
+      this.totalAmount = res.totalAmount;
       this.bookingData = res.bookingData;
 
     }).catch(error => {

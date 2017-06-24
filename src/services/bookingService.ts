@@ -1,3 +1,4 @@
+import { ANY_STATE } from '@angular/animations/browser/src/dsl/animation_transition_expr';
 import { AppSettings } from '../appSettings';
 
 import { Room } from '../model/room';
@@ -14,17 +15,18 @@ export class BookingService {
         private appSettings: AppSettings) {
     }
 
-    createBooking(room: Room, bookingData) {
-        var startDateTime = new Date(bookingData.bookDate);
+    createBooking(room: Room, totalAmount, bookingData) {
+        var startDateTime: any = new Date(bookingData.bookDate);
         startDateTime.setHours(bookingData.startDateTime.split(':')[0]);
         startDateTime.setMinutes(bookingData.startDateTime.split(':')[1]);
 
-        var endDateTime = new Date(bookingData.bookDate);
+        var endDateTime: any = new Date(bookingData.bookDate);
         endDateTime.setHours(bookingData.endDateTime.split(':')[0]);
         endDateTime.setMinutes(bookingData.endDateTime.split(':')[1]);
 
         var data = {
             "room": room._id,
+            "totalAmount": totalAmount,
             "startDateTime": startDateTime.toString(),
             "endDateTime": endDateTime.toString(),
             "phoneNo": bookingData.phoneNo,
