@@ -16,6 +16,8 @@ import { Storage } from '@ionic/storage';
 export class ReceiptPage {
   private bookingData;
   private bookedRoom: Room;
+  private startDateTime;
+  private endDateTime;
   private totalAmount;
 
   private isViewMode = false;
@@ -45,6 +47,10 @@ export class ReceiptPage {
     } else {
       //new form
       this.pageTitle = "確認預約";
+      console.log("asdasD");
+      console.log(this.bookingData);
+      this.startDateTime = this.getTimeString(this.bookingData.startDateTime);
+      this.endDateTime = this.getTimeString(this.bookingData.endDateTime);
     }
 
     this.loadingCtr = this.loadingCtrl.create({
@@ -61,7 +67,6 @@ export class ReceiptPage {
       // check booking data will use this logic
       this.getBooking();
     } else {
-
       //get booking and room data from constructor
     }
   }
@@ -75,7 +80,7 @@ export class ReceiptPage {
 
       let alert = this.alertCtrl.create({
         title: '已成功預約',
-        message: '參考編號: ' + returnedReservationId.toString() + ' 以作搜尋紀錄之用途，參考編號亦可在「尋找編號紀錄」頁面中尋找',
+        message: '參考編號: ' + returnedReservationId.toString() + ' 以作搜尋紀錄之用途，參考編號可在「預約紀錄」頁面中尋找',
         buttons: [{
           text: '確定',
           handler: () => {
@@ -97,8 +102,8 @@ export class ReceiptPage {
                 data: {
                   bookDate: this.bookingData.bookDate,
                   totalAmount: this.totalAmount,
-                  startDateTime: this.bookingData.startDateTime,
-                  endDateTime: this.bookingData.endDateTime,
+                  startDateTime: this.getTimeString(this.bookingData.startDateTime),
+                  endDateTime: this.getTimeString(this.bookingData.endDateTime)
                 }
               }
 
@@ -142,6 +147,9 @@ export class ReceiptPage {
       this.totalAmount = res.totalAmount;
       this.bookingData = res.bookingData;
 
+      this.startDateTime = this.getTimeString(this.bookingData.startDateTime);
+      this.endDateTime = this.getTimeString(this.bookingData.endDateTime);
+
     }).catch(error => {
 
       let alert = this.alertCtrl.create({
@@ -170,5 +178,23 @@ export class ReceiptPage {
   viewRoom() {
     console.log(this.bookedRoom);
     this.navCtrl.push(RoomPage, { 'roomId': this.bookedRoom._id });
+  }
+
+  getTimeString(dateTime) {
+    //Convert 24 format to 12
+
+    var hh = parseInt(dateTime.split(':')[0]);
+    var dd = "AM";
+    var h = hh;
+
+    if (h >= 12) {
+      h = hh - 12;
+      dd = "PM";
+    }
+    if (h == 0) {
+      h = 12;
+    }
+
+    return h + ':' + dateTime.split(':')[1] + " " + dd
   }
 }

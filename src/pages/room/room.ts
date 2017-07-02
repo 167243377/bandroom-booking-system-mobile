@@ -368,7 +368,21 @@ export class RoomPage {
         this.isShowGears = !this.isShowGears;
     }
 
-    getTimeString(dateTime) {
-        return dateTime.toLocaleTimeString().split(':')[0] + ':' + dateTime.toLocaleTimeString().split(':')[1]
+    getTimeString(dateTime: Date) {
+        //Convert 24 format to 12
+
+        var hh = dateTime.getHours();
+        var dd = "AM";
+        var h = hh;
+
+        if (h >= 12) {
+            h = hh - 12;
+            dd = "PM";
+        }
+        if (h == 0) {
+            h = 12;
+        }
+
+        return h + ':' + dateTime.toLocaleTimeString().split(':')[1] + " " + dd
     }
 }
