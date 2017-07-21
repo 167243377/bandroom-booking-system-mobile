@@ -37,6 +37,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
+import { CallNumber } from '@ionic-native/call-number';
+
 const cloudSettings: CloudSettings = {
     'core': {
         'app_id': '48759dc1'
@@ -105,6 +107,7 @@ const cloudSettings: CloudSettings = {
         AppSettings,
         Clipboard,
         RoomService,
+        CallNumber,
         BookingService]
 })
 export class AppModule {

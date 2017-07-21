@@ -21,6 +21,7 @@
     "@angular/platform-browser-dynamic": "^4.2.3",
     "@angular/platform-server": "^4.2.3",
     "@angular/tsc-wrapped": "^4.2.3",
+    "@ionic-native/call-number": "^4.1.0",
     "@ionic-native/clipboard": "^3.12.1",
     "@ionic-native/core": "^3.12.1",
     "@ionic/cloud-angular": "^0.12.0",

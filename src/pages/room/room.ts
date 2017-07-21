@@ -9,6 +9,7 @@ import { Room } from '../../model/room';
 import { BookformPage } from '../bookform/bookform';
 
 import { Storage } from '@ionic/storage';
+import { CallNumber } from '@ionic-native/call-number';
 
 import {
     startOfDay,
@@ -122,7 +123,8 @@ export class RoomPage {
         private modalCtrl: ModalController,
         private roomService: RoomService,
         private storage: Storage,
-        private appSettings: AppSettings) {
+        private appSettings: AppSettings,
+        private callNumber: CallNumber) {
 
         this.roomId = navParams.get('roomId');
 
@@ -384,5 +386,11 @@ export class RoomPage {
         }
 
         return h + ':' + dateTime.toLocaleTimeString().split(':')[1] + " " + dd
+    }
+
+    phoneCall() {
+        this.callNumber.callNumber(this.room.center.contactNumber, false)
+            .then(() => console.log('Launched dialer!'))
+            .catch(() => console.log('Error launching dialer'));
     }
 }
