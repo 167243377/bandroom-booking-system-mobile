@@ -150,6 +150,8 @@ export class ReceiptPage {
       this.startDateTime = this.getTimeString(this.bookingData.startDateTime);
       this.endDateTime = this.getTimeString(this.bookingData.endDateTime);
 
+      console.log(this.bookedRoom.center);
+
     }).catch(error => {
 
       let alert = this.alertCtrl.create({

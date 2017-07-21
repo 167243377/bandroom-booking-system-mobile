@@ -39,7 +39,9 @@
 		</ion-row>
 		<ion-row center>
 			<ion-col>
-				<ion-icon name="call"  (click)="phoneCall()"> {{ room.center.contactNumber }}</ion-icon>
+				<ion-label>	
+					<ion-icon name="call" (click)="phoneCall()"></ion-icon> {{ room.center.contactNumber | phoneNoFormat }}
+					</ion-label>
 			</ion-col>
 		</ion-row>
 	</ion-grid>
